@@ -18,6 +18,7 @@ TBD
 * Kai Bali @kai23bali
   - NetID: ksb410
   - Area: TBD
+  - Email: ksb410@msstate.edu
 * Krishna Oli (Invite Pending)
   - NetID: kco76
   - Area: TBD
