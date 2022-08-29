@@ -11,10 +11,11 @@ TBD
 
 ---
 ## Group Members
-* Graham Sanders @gcsanders5
+* Graham Sanders @gsanders5
   - NetID: gcs156
   - Group Lead
   - Area: TBD
+  - Email: git@grahamsanders.org
 * Kai Bali @kai23bali
   - NetID: ksb410
   - Area: TBD
@@ -22,7 +23,12 @@ TBD
 * Krishna Oli (Invite Pending)
   - NetID: kco76
   - Area: TBD
+  - Email: kco76@msstate.edu
 * Connor Carr @cjclmemphis
   - NetID: cjc935
   - Area: TBD
-  - Email: cjclmemphis@fgmail.com
+  - Email: cjclmemphis@gmail.com
+* Gavin Sharp (Invite Pending)
+  - NetID: gas140
+  - Area: TBD
+  - Email: gas140@msstate.edu
