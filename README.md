@@ -21,3 +21,6 @@ TBD
 * Krishna Oli (Invite Pending)
   - NetID: kco76
   - Area: TBD
+* Connor Carr @cjclmemphis
+  - NetID: cjc935
+  - Area: TBD
