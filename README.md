@@ -24,3 +24,4 @@ TBD
 * Connor Carr @cjclmemphis
   - NetID: cjc935
   - Area: TBD
+  - Email: cjclmemphis@fgmail.com
