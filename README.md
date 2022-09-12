@@ -7,7 +7,8 @@ TBD
 ## Features:
 TBD
 ## Languages & Techniques:
-TBD
+* Frontend: React, Bootstrap
+* Backend: Django
 
 ---
 ## Group Members
