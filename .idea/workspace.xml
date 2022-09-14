@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e07da794-f670-4d33-ab63-0a92047a2bb2" name="Changes" comment="" />
+    <list default="true" id="e07da794-f670-4d33-ab63-0a92047a2bb2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Group_5.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Group_5.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Django/.idea/Django.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Django/.idea/Django.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Django/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/Django/db.sqlite3" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,7 +29,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/cjclmemphis/Projects/FacebookClone/Group_5",
+    "last_opened_file_path": "D:/Projects/MSU Fall 2022/FacebookClone/Group_5",
+    "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
   }
 }]]></component>
@@ -36,6 +43,8 @@
       <option name="presentableId" value="Default" />
       <updated>1663056680200</updated>
       <workItem from="1663056681371" duration="66000" />
+      <workItem from="1663126102722" duration="541000" />
+      <workItem from="1663127146710" duration="908000" />
     </task>
     <servers />
   </component>
