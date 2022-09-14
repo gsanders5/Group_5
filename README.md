@@ -1,11 +1,15 @@
 # Group 5: Intro to SE (Fall 2022)
 ---
 ## Project Description:
-TBD
+Facebook-esque social media platform
 ## Objective:
-TBD
+Design  and  develop  a  Facebook  like  social  media  platform  that  will  have  a  number  of 
+different functionalities based on the customer (TA) expectations. 
 ## Features:
-TBD
+* Log-in / Log-out
+* Send, accept, and reject friend requests
+* Compose, edit, and post status on user's timeline
+* Interact with friends' timelines by liking, commenting, and sharing posts
 ## Languages & Techniques:
 * Frontend: React, Bootstrap
 * Backend: Django
@@ -21,7 +25,7 @@ TBD
   - NetID: ksb410
   - Area: TBD
   - Email: ksb410@msstate.edu
-* Krishna Oli (Invite Pending)
+* Krishna Oli
   - NetID: kco76
   - Area: TBD
   - Email: kco76@msstate.edu
@@ -29,7 +33,7 @@ TBD
   - NetID: cjc935
   - Area: TBD
   - Email: cjclmemphis@gmail.com
-* Gavin Sharp (Invite Pending)
+* Gavin Sharp
   - NetID: gas140
   - Area: TBD
   - Email: gas140@msstate.edu
