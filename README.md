@@ -23,7 +23,7 @@ different functionalities based on the customer (TA) expectations.
   - Email: git@grahamsanders.org
 * Kai Bali @kai23bali
   - NetID: ksb410
-  - Area: TBD
+  - Area: Backend
   - Email: ksb410@msstate.edu
 * Krishna Oli
   - NetID: kco76
