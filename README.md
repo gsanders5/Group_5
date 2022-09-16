@@ -19,7 +19,7 @@ different functionalities based on the customer (TA) expectations.
 * Graham Sanders @gsanders5
   - NetID: gcs156
   - Group Lead
-  - Area: TBD
+  - Area: Backend
   - Email: git@grahamsanders.org
 * Kai Bali @kai23bali
   - NetID: ksb410
