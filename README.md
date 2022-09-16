@@ -31,7 +31,7 @@ different functionalities based on the customer (TA) expectations.
   - Email: kco76@msstate.edu
 * Connor Carr @cjclmemphis
   - NetID: cjc935
-  - Area: TBD
+  - Area: Fullstack
   - Email: cjclmemphis@gmail.com
 * Gavin Sharp
   - NetID: gas140
