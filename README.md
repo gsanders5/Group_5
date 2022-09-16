@@ -27,7 +27,7 @@ different functionalities based on the customer (TA) expectations.
   - Email: ksb410@msstate.edu
 * Krishna Oli
   - NetID: kco76
-  - Area: TBD
+  - Area: Frontend
   - Email: kco76@msstate.edu
 * Connor Carr @cjclmemphis
   - NetID: cjc935
