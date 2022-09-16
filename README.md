@@ -35,5 +35,5 @@ different functionalities based on the customer (TA) expectations.
   - Email: cjclmemphis@gmail.com
 * Gavin Sharp
   - NetID: gas140
-  - Area: TBD
+  - Area: Frontend
   - Email: gas140@msstate.edu
