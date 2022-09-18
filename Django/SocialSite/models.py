@@ -1,3 +1,5 @@
+
+import django.utils.timezone
 from django.db import models
 
 
@@ -11,14 +13,15 @@ class Profile(models.Model):
     email = models.EmailField()
     phoneNumber = models.CharField(max_length=255)
     bio = models.TextField()
-    isPrivate = models.BooleanField()
+    isPrivate = models.BooleanField(default='True')
+    isAdmin = models.BooleanField(default='False')
 
 
 class Post(models.Model):
     userId = models.IntegerField()
-    numOfLikes = models.IntegerField()
+    numOfLikes = models.IntegerField(default='0')
     # image = models.ImageField() -> need to handle storage to implement
-    createdAt = models.DateTimeField(auto_now_add=True)
+    createdAt = models.DateTimeField()
 
 
 class FriendLink(models.Model):
@@ -34,3 +37,4 @@ class FriendLink(models.Model):
         (STATUS_REJECTED, "REJECTED"),
     ]
     status = models.IntegerField(choices=STATUS_CHOICES, default=STATUS_PENDING)
+
