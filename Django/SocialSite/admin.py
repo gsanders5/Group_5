@@ -20,3 +20,4 @@ class ProfileAdmin(admin.ModelAdmin):
 # admin.site.register(models.Profile)
 admin.site.register(models.Post)
 admin.site.register(models.FriendList)
+admin.site.register(models.PostList)

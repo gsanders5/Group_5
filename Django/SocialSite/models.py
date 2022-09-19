@@ -25,6 +25,7 @@ class Profile(models.Model):
 
 
 # Friend List implementation: https://www.youtube.com/watch?v=hyJO4mkdwuM&list=PLgCYzUzKIBE9KUJZJUmnDFYQfVyXYjX6r&index=15
+
 class FriendList(models.Model):
     user = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='user')
     friends = models.ManyToManyField(Profile, blank=True, related_name='friends')
@@ -41,5 +42,6 @@ class Post(models.Model):
     content = models.TextField()
     # image = models.ImageField() -> need to handle storage to implement
     createdAt = models.DateTimeField()
+    usersWhoLiked = models.ManyToManyField('Profile', blank=True, related_name='users_who_liked')
 
 
