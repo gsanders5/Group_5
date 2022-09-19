@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 import debug_toolbar
 
+admin.site.site_header = 'SocialSite Admin'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('site/', include('DjangoApp.urls')),
     path('__debug__', include(debug_toolbar.urls)),
+    path('socialsite/', include('SocialSite.urls')),
 ]
