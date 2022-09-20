@@ -30,10 +30,20 @@ class FriendList(models.Model):
     user = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='user')
     friends = models.ManyToManyField(Profile, blank=True, related_name='friends')
 
+    def add_friend(self, account):
+        # add friend
+        if account not in self.friends:
+            self.friends.add(account)
 
-class PostList(models.Model):
-    user = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='poster')
-    posts = models.ManyToManyField('Post', blank=True, related_name='posts')
+    def remove_friend(self, account):
+        # remove friend
+        if account in self.friends:
+            self.friends.remove(account)
+
+    # Handle requests
+
+    def __str__(self):
+        return "UserId: " + self.user.id + " FriendsListId: " + self.id
 
 
 class Post(models.Model):
@@ -44,4 +54,21 @@ class Post(models.Model):
     createdAt = models.DateTimeField()
     usersWhoLiked = models.ManyToManyField('Profile', blank=True, related_name='users_who_liked')
 
+    def __str__(self):
+        return "PostId: " + self.id + " PostedBy: " + self.userId
 
+
+class PostList(models.Model):
+    user = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='poster')
+    posts = models.ManyToManyField('Post', blank=True, related_name='posts')
+
+    def add_post(self, post: Post):
+        if post not in self.posts:
+            self.posts.add(post)
+
+    def remove_post(self, post: Post):
+        if post in self.posts:
+            self.posts.remove(post)
+
+    def __str__(self):
+        return "UserId: " + self.user.id + " PostListId: " + self.id
