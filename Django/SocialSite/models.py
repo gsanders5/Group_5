@@ -1,34 +1,88 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 # Create your models here.
 # Relationship types for Sharing/Liking Posts
 # Look at making indexes
 
-class Profile(models.Model):
-    firstName = models.CharField(max_length=255)
-    lastName = models.CharField(max_length=255)
-    username = models.CharField(max_length=255, default='%s_%s' % (firstName, lastName))
-    email = models.EmailField()
-    phoneNumber = models.CharField(max_length=255)
+class MyAccountManager(BaseUserManager):
+    def create_user(self, email, username, password=None):
+        if not email:
+            raise ValueError("Users must have an email address")
+        if not username:
+            raise ValueError("Users must have a username")
+        user = self.model(
+            email=self.normalize_email(email),
+            username=username
+        )
+        user.set_password(password)
+        user.save(using=self.db)
+        return user
+
+    def create_superuser(self, email, username, password):
+        user = self.create_user(
+            email=self.normalize_email(email),
+            username=username,
+            password=password
+        )
+        user.is_admin = True
+        user.is_superuser = True
+        user.is_staff = True
+        user.save(using=self.db)
+        return user
+
+
+def get_profile_image_filepath(self):
+    return f'profile_images/{self.pk}/{"profile_image.png"}'
+
+
+def get_default_profile_image():
+    return "media/defaultProfileImage.png"
+
+
+class Account(AbstractBaseUser):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
     bio = models.TextField()
+    email = models.EmailField(verbose_name="email", max_length=60, unique=True)
+    username = models.CharField(max_length=255, unique=True)
+    date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
+    last_login = models.DateTimeField(verbose_name="last login", auto_now=True)
+    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    profile_image = models.ImageField(max_length=255, upload_to=get_profile_image_filepath, null=True, blank=True, default=get_default_profile_image)
+    hide_email = models.BooleanField(default=True)
     isPrivate = models.BooleanField(default='True')
-    isAdmin = models.BooleanField(default='False')
-    friendsList = models.ForeignKey('FriendList', on_delete=models.CASCADE)
-    postList = models.ForeignKey('PostList', on_delete=models.CASCADE)
+
+    friendsList = models.ForeignKey('FriendList', on_delete=models.CASCADE, null=True)
+    postList = models.ForeignKey('PostList', on_delete=models.CASCADE, null=True)
+
+    objects = MyAccountManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
-        return self.firstName + " " + self.lastName
+        return self.username
 
-    class Meta:
-        ordering = ["id"]
+    def has_perm(self, perm, obj=None):
+        return self.is_admin
+
+    def has_module_perms(self, app_label):
+        return True
+
+    def get_profile_image_filename(self):
+        return  str(self.profile_image)[str(self.profile_image).index(f'profile_images/{self.pk}/'):]
 
 
 # Friend List implementation: https://www.youtube.com/watch?v=hyJO4mkdwuM&list=PLgCYzUzKIBE9KUJZJUmnDFYQfVyXYjX6r&index=15
 
 class FriendList(models.Model):
-    user = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='user')
-    friends = models.ManyToManyField(Profile, blank=True, related_name='friends')
+    user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='user')
+    friends = models.ManyToManyField(Account, blank=True, related_name='friends')
 
     def add_friend(self, account):
         # add friend
@@ -43,7 +97,7 @@ class FriendList(models.Model):
     # Handle requests
 
     def __str__(self):
-        return "UserId: " + self.user.id + " FriendsListId: " + self.id
+        return "UserId: " + str(self.user.id) + " FriendsListId: " + str(self.id)
 
 
 class Post(models.Model):
@@ -52,14 +106,14 @@ class Post(models.Model):
     content = models.TextField()
     # image = models.ImageField() -> need to handle storage to implement
     createdAt = models.DateTimeField()
-    usersWhoLiked = models.ManyToManyField('Profile', blank=True, related_name='users_who_liked')
+    usersWhoLiked = models.ManyToManyField('Account', blank=True, related_name='users_who_liked')
 
     def __str__(self):
-        return "PostId: " + self.id + " PostedBy: " + self.userId
+        return "PostId: " + str(self.id) + " PostedBy: " + str(self.userId)
 
 
 class PostList(models.Model):
-    user = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='poster')
+    user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='poster')
     posts = models.ManyToManyField('Post', blank=True, related_name='posts')
 
     def add_post(self, post: Post):
@@ -71,4 +125,4 @@ class PostList(models.Model):
             self.posts.remove(post)
 
     def __str__(self):
-        return "UserId: " + self.user.id + " PostListId: " + self.id
+        return "UserId: " + str(self.user.id) + " PostListId: " + str(self.id)

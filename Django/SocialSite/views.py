@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from .models import Profile, FriendList, Post
+from .models import Account, FriendList, Post
 from .serializers import ProfileSerializer
 
 
@@ -34,25 +34,25 @@ def getPosts(request):
     return Response()
 
 
-@api_view()
-def getUserProfile(request):
-    # change to request's data -> id of current user
-    profile = get_object_or_404(Profile, phoneNumber='901-570-5688')
-    # profile = Profile.objects.get(phoneNumber='901-570-5688')
-    serializer = ProfileSerializer(profile)
-    return Response(serializer.data)
+# @api_view()
+# def getUserProfile(request):
+#     # change to request's data -> id of current user
+#     # profile = get_object_or_404(Profile, phoneNumber='901-570-5688')
+#     # profile = Profile.objects.get(phoneNumber='901-570-5688')
+#     serializer = ProfileSerializer(profile)
+#     return Response(serializer.data)
 
 
-@api_view()
-def getProfileById(request, profileId):
-    try:
-        # get id from request
-        profile = get_object_or_404(Profile, phoneNumber='901-570-5688')
-
-        profile = Profile.objects.get(id=profileId)
-        serializer = ProfileSerializer(profile)
-
-    except Profile.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    return Response(serializer.data)
+# @api_view()
+# def getProfileById(request, profileId):
+#     try:
+#         # get id from request
+#         # profile = get_object_or_404(Profile, phoneNumber='901-570-5688')
+#
+#         # profile = Profile.objects.get(id=profileId)
+#         # serializer = ProfileSerializer(profile)
+#
+#     except Profile.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
+#
+#     return Response(serializer.data)
