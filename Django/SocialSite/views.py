@@ -1,4 +1,5 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth import login, authenticate
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
@@ -8,9 +9,34 @@ from rest_framework import status
 from rest_framework.views import APIView
 from .models import Account, FriendList, Post
 from .serializers import ProfileSerializer
+from .forms import RegistrationForm
 
 
 # implementation of sample API: https://www.youtube.com/watch?v=0UKWcv0og-Y&list=PLgCYzUzKIBE9KUJZJUmnDFYQfVyXYjX6r&index=1
+
+def register_view(request, *args, **kwargs):
+    user = request.user
+    if user.is_authenticated:
+        return HttpResponse(f"You are already authenticated as {user.email}.")
+    context = {}
+
+    if request.POST:
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            email = form.cleaned_data.get('email').lower()
+            raw_password = form.cleaned_data.get('password1')
+            account = authenticate(email=email, password=raw_password)
+            login(request, account)
+            destination = kwargs.get("next")
+            if destination:
+                return redirect(destination)
+            return redirect("home")
+
+        else:
+            context['registration_form'] = form
+    return render(request, 'SocialSite/register.html', context)
+
 
 @api_view(['POST'])
 def newUser(request):

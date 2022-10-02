@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'SocialSite',
     'Django',
+    'personal',
 ]
 
 MIDDLEWARE = [
@@ -66,8 +67,7 @@ ROOT_URLCONF = 'Django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -143,6 +143,9 @@ MEDIA_URL = '/media/'
 
 STATIC_ROOT = str(BASE_DIR / 'static_cdn')
 MEDIA_ROOT = str(BASE_DIR / 'media_cdn')
+
+TEMP = str(BASE_DIR / 'media_cdn/temp')
+
 
 BASE_DIR = "http://127.0.0.1:8000"
 

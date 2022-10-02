@@ -42,9 +42,9 @@ def get_default_profile_image():
 
 
 class Account(AbstractBaseUser):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    bio = models.TextField()
+    first_name = models.CharField(max_length=255, null=True, blank=True)
+    last_name = models.CharField(max_length=255, null=True, blank=True)
+    bio = models.TextField(null=True, blank=True)
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
     username = models.CharField(max_length=255, unique=True)
     date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
@@ -75,7 +75,7 @@ class Account(AbstractBaseUser):
         return True
 
     def get_profile_image_filename(self):
-        return  str(self.profile_image)[str(self.profile_image).index(f'profile_images/{self.pk}/'):]
+        return str(self.profile_image)[str(self.profile_image).index(f'profile_images/{self.pk}/'):]
 
 
 # Friend List implementation: https://www.youtube.com/watch?v=hyJO4mkdwuM&list=PLgCYzUzKIBE9KUJZJUmnDFYQfVyXYjX6r&index=15
