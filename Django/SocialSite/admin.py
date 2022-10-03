@@ -1,13 +1,17 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from . import models
 
 
 # Register your models here.
 
 
-@admin.register(models.Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['id', 'firstName', 'lastName', 'email']
+
+@admin.register(models.Account)
+class AccountAdmin(admin.ModelAdmin):
+    list_display = ['email', 'username', 'date_joined', 'last_login', 'is_admin', 'is_staff']
+    search_fields = ['email', 'username']
+    readonly_fields = ['id', 'date_joined', 'last_login']
     list_per_page = 100
     list_editable = []
 
