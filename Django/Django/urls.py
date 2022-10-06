@@ -23,6 +23,11 @@ from personal.views import (
 
 from SocialSite.views import (
     register_view,
+    login_view,
+    logout_view,
+    account_view,
+    account_search_view,
+    edit_account_view,
 )
 import debug_toolbar
 
@@ -31,9 +36,13 @@ admin.site.site_header = 'SocialSite Admin'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('__debug__', include(debug_toolbar.urls)),
-    path('socialsite/', include('SocialSite.urls')),
     path('', home_screen_view, name='home'),
-    path('register/', register_view, name='register')
+    path('account/<user_id>/', account_view, name='view'),
+    path('account/<user_id>/edit/', edit_account_view, name='edit'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+    path('register/', register_view, name='register'),
+    path('search/', account_search_view, name='search'),
 
 ]
 
