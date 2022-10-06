@@ -35,7 +35,7 @@ admin.site.site_header = 'SocialSite Admin'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('__debug__', include(debug_toolbar.urls)),
+    # path('__debug__', include(debug_toolbar.urls)),
     path('', home_screen_view, name='home'),
     path('account/<user_id>/', account_view, name='view'),
     path('account/<user_id>/edit/', edit_account_view, name='edit'),
