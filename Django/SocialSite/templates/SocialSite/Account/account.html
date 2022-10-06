@@ -159,6 +159,7 @@
                     </div>
 
                     <!-- TODO -->
+                    {% if is_self %}
                     <div class="card m-2 px-4 pb-4">
                         <div class="d-flex flex-column pt-4">
                             <a href="#">
@@ -168,6 +169,7 @@
                             </a>
                         </div>
                     </div>
+                    {% endif %}
 
                     {% if is_friend %}
                         <div class="d-flex flex-row align-items-center btn btn-primary m-2 px-4" onclick="createOrReturnPrivateChat('{{id}}')">
