@@ -23,7 +23,7 @@
     border-bottom-left-radius: 0;
   }
   .form-signin input[type="password"] {
-    margin-bottom: -1px;
+    margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
@@ -33,38 +33,47 @@
 
 
     <div class="container-fluid">
-	<div class="row justify-content-center">
-		<div class="card card-signin">
-		  <div class="card-body">
-		    <form class="form-signin" method="post">{% csrf_token %}
-				<input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+	<div class="d-flex row">
+        <div class="col">
+            <div class="card card-signin">
+                <div class="card-body">
+                    <div class="d-flex flex-column pb-3 align-items-center">
+                        <h3>Register</h3>
+                    </div>
+                    <form class="form-signin" method="post">{% csrf_token %}
+                        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
 
-				<input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required>
+                        <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required>
 
-				<input type="password" name="password1" id="inputPassword1" class="form-control" placeholder="Password" required>
+                        <input type="text" name="first_name" id="inputFirstName" class="form-control" placeholder="First Name" required>
 
-				<input type="password" name="password2" id="inputPassword2" class="form-control" placeholder="Confirm password" required>
+                        <input type="text" name="last_name" id="inputLastName" class="form-control" placeholder="Last Name" required>
 
-				{% for field in registration_form %}
-				<p>
-				{% for error in field.errors %}
-				<p style="color: red">{{ error }}</p>
-				{% endfor %}
-				</p>
-				{% endfor %}
-				{% if registration_form.non_field_errors %}
-				<div style="color: red">
-					<p>{{registration_form.non_field_errors}}</p>
-				</div>
+                        <input type="password" name="password1" id="inputPassword1" class="form-control" placeholder="Password" required>
 
-				{% endif %}
+                        <input type="password" name="password2" id="inputPassword2" class="form-control" placeholder="Confirm password" required>
 
-				<button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+                        {% for field in registration_form %}
+                        <p>
+                        {% for error in field.errors %}
+                        <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                        </p>
+                        {% endfor %}
+                        {% if registration_form.non_field_errors %}
+                        <div style="color: red">
+                            <p>{{registration_form.non_field_errors}}</p>
+                        </div>
 
-				</form>
-		  </div>
-		</div>
+                        {% endif %}
 
+                        <div class="row align-items-center p-2">
+                            <button class="btn btn-primary" type="submit">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 	</div>
 </div>
 
