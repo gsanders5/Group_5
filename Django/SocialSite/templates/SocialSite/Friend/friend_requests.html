@@ -90,13 +90,12 @@
         }
 
         function triggerDeclineFriendRequest(friend_request_id){
-            //declineFriendRequest(friend_request_id, onFriendRequestDeclined)
+            declineFriendRequest(friend_request_id, onFriendRequestDeclined)
         }
     </script>
 
     {% include 'SocialSite/Friend/accept_friend_request.html' %}
-    {#% include 'friend/snippets/decline_friend_request.html' %#}
-
+    {% include 'SocialSite/Friend/decline_friend_request.html' %}
 
 {% endblock content %}
 

@@ -149,7 +149,7 @@
                         {% endif %}
 
                         <div class="d-flex flex-column pt-4">
-                            <a href="#">
+                            <a href="{% url 'friend-list' user_id=id %}">
                                 <div class="d-flex flex-row align-items-center justify-content-center icon-container">
                                     <span class="material-icons mr-2 friends-icon">contact_page</span><span class="friend-text">Friends ({{ friends|length }})</span>
                                 </div>
@@ -170,16 +170,6 @@
                             </div>
                         </div>
                     {% endif %}
-
-                    {% if is_friend %}
-                        <div class="d-flex flex-row align-items-center btn btn-primary m-2 px-4" onclick="createOrReturnPrivateChat('{{id}}')">
-					<span class="material-icons m-auto">
-					message
-					</span>
-                            <span class="message-btn-text m-auto pl-2">Message</span>
-                        </div>
-                    {% endif %}
-
                 </div>
             {% endif %}
         </div>
@@ -188,8 +178,6 @@
 
     <script type="text/javascript">
 
-        // called from base_js.html
-        //preloadImage("{{profile_image|safe}}", 'id_profile_image')
         function onFriendRequestSent(){
             location.reload();
         }
@@ -221,7 +209,7 @@
         let cancelFriendRequestBtn = document.getElementById("id_cancel_friend_request_btn")
         if(cancelFriendRequestBtn != null){
             cancelFriendRequestBtn.addEventListener("click", function(){
-                //cancelFriendRequest("{{id}}", onFriendRequestCancelled)
+                cancelFriendRequest("{{id}}", onFriendRequestCancelled)
             })
         }
 
@@ -237,7 +225,7 @@
         }
 
         function triggerDeclineFriendRequest(friend_request_id){
-            //declineFriendRequest(friend_request_id, onFriendRequestDeclined)
+            declineFriendRequest(friend_request_id, onFriendRequestDeclined)
         }
 
     </script>
@@ -245,11 +233,8 @@
     {% include 'SocialSite/Friend/send_friend_request.html' %}
     {% include 'SocialSite/Friend/accept_friend_request.html' %}
     {% include 'SocialSite/Friend/remove_friend.html' %}
-
-    {#% include 'snippets/decline_friend_request.html' %#}
-    {#% include 'snippets/cancel_friend_request.html' %#}
-    {#% include 'chat/create_or_return_private_chat.html' %#}
-
+    {% include 'SocialSite/Friend/decline_friend_request.html' %}
+    {% include 'SocialSite/Friend/cancel_friend_request.html' %}
 
 
 {% endblock content %}
