@@ -28,6 +28,10 @@ from SocialSite.views import (
     account_view,
     account_search_view,
     edit_account_view,
+    send_friend_request,
+    accept_friend_request,
+    remove_friend,
+    friend_requests_view,
 )
 import debug_toolbar
 
@@ -41,6 +45,10 @@ urlpatterns = [
     path('account/<user_id>/edit/', edit_account_view, name='edit'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
+    path('friend/friend_remove/', remove_friend, name="remove-friend"),
+    path('friend/friend_request/', send_friend_request, name="friend-request"),
+    path('friend/friend_request/<user_id>/', friend_requests_view, name="friend-requests"),
+    path('friend/accept_friend_request/<friend_request_id>/', accept_friend_request, name="friend-request-accept"),
     path('register/', register_view, name='register'),
     path('search/', account_search_view, name='search'),
 
