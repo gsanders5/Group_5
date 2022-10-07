@@ -3,6 +3,10 @@
 [![Build Status](https://build.rvnx.org/buildStatus/icon?job=Group_5_Project&subject=Build+Staus%3A)](https://build.rvnx.org/job/Group_5_Project/)
 [![Build Status](https://build.rvnx.org/buildStatus/icon?job=Group_5_Project&subject=Last+Commit+%5B%23Job+Number%5D&status=%24%7BdisplayName%7D)](https://build.rvnx.org/job/Group_5_Project/)
 
+For a live demo of the project: **[click here for the live demo](https://eden.rvnx.org:9192/)**.
+
+This demo is continuously updated and automatically deployed using the last successful build of our repo via Jenkins CI.
+
 ## Project Description:
 Facebook-esque social media platform
 ## Objective:
@@ -28,7 +32,7 @@ different functionalities based on the customer (TA) expectations.
   - NetID: ksb410
   - Area: Backend
   - Email: ksb410@msstate.edu
-* Krishna Oli
+* Krishna Oli @Krishna-Oli
   - NetID: kco76
   - Area: Frontend
   - Email: kco76@msstate.edu
@@ -36,7 +40,7 @@ different functionalities based on the customer (TA) expectations.
   - NetID: cjc935
   - Area: Fullstack
   - Email: cjclmemphis@gmail.com
-* Gavin Sharp
+* Gavin Sharp @GavinShar
   - NetID: gas140
   - Area: Frontend
   - Email: gas140@msstate.edu
