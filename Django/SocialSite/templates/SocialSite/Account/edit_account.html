@@ -1,4 +1,4 @@
-{% extends 'testbase.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
@@ -39,10 +39,10 @@
                 <div class="card profile-card m-2">
                     <div class="card-body">
                         <div class="d-flex flex-column justify-content-center p-4">
-{#                            <div class="mb-2" id="id_image_crop_confirm">#}
-{#                                <span id="id_cancel" class="material-icons">cancel</span>#}
-{#                                <span id="id_confirm" class="material-icons">check</span>#}
-{#                            </div>#}
+                            {#                            <div class="mb-2" id="id_image_crop_confirm">#}
+                            {#                                <span id="id_cancel" class="material-icons">cancel</span>#}
+                            {#                                <span id="id_confirm" class="material-icons">check</span>#}
+                            {#                            </div>#}
                             <div class="mx-auto mb-4 image-container" id="id_image_container">
                                 <img class="border border-dark rounded-circle img-fluid mx-auto profile-image" id="id_profile_image" src="{{form.initial.profile_image.url}}" alt="default profile logo">
                                 {#                        <div class="middle" id="id_middle_container">#}
