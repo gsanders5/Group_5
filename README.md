@@ -1,5 +1,8 @@
 # Group 5: Intro to SE (Fall 2022)
----
+
+[![Build Status](https://build.rvnx.org/buildStatus/icon?job=Group_5_Project&subject=Build+Staus%3A)](https://build.rvnx.org/job/Group_5_Project/)
+[![Build Status](https://build.rvnx.org/buildStatus/icon?job=Group_5_Project&subject=Last+Commit+%5B%23Job+Number%5D&status=%24%7BdisplayName%7D)](https://build.rvnx.org/job/Group_5_Project/)
+
 ## Project Description:
 Facebook-esque social media platform
 ## Objective:
