@@ -18,7 +18,7 @@ different functionalities based on the customer (TA) expectations.
 * Compose, edit, and post status on user's timeline
 * Interact with friends' timelines by liking, commenting, and sharing posts
 ## Languages & Techniques:
-* Frontend: React, Bootstrap
+* Frontend: Bootstrap
 * Backend: Django
 
 ---
