@@ -11,6 +11,7 @@
         <div class="me-4">
             {%  if request.user.is_authenticated %}
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="navbar-text">Welcome Back, {{ request.user.username }}!</li>
                     <li class="nav-item dropstart align-items-center p-2">
                         <a class="d-flex notifications-icon-container rounded-circle align-items-center mr-3" href="#" id="id_notifications_dropdown_toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span id="id_notifications_count" class="notify-badge"></span>
