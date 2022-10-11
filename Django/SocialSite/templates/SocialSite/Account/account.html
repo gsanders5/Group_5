@@ -81,7 +81,7 @@
                                 <p class="overflow-auto card-text">{{bio}}</p>
                                 {% if is_self %}
                                     <div class="d-flex justify-content-end pe-3">
-                                        <a  class="btn btn-secondary btn-sm" href="{% url 'edit' user_id=id %}">Update</a>
+                                        <a class="btn btn-secondary btn-sm" href="{% url 'edit' user_id=id %}">Update</a>
                                     </div>
                                 {% endif %}
                             </div>
@@ -94,7 +94,7 @@
                     {% if request_sent == 0 %}
                         <div class="card ms-2 mb-2 p-4">
                             <div class="d-flex flex-row align-items-center">
-                                <span class="friend-text align-items-center mr-2">Accept Friend Request</span>
+                                <span class="friend-text align-items-center me-1 pt-1">Accept Friend Request</span>
                                 <span id="id_cancel_{{id}}" class="decline-friend-request material-icons p-1" onclick='triggerDeclineFriendRequest("{{pending_friend_request_id}}")'>cancel</span>
                                 <span id="id_confirm_{{id}}" class="confirm-friend-request material-icons p-1" onclick='triggerAcceptFriendRequest("{{pending_friend_request_id}}")'>check</span>
                             </div>
@@ -134,7 +134,7 @@
                         <div class="d-flex flex-column pt-4">
                             <a href="{% url 'friend-list' user_id=id %}">
                                 <div class="d-flex flex-row align-items-center justify-content-center icon-container">
-                                    <span class="material-icons mr-2 friends-icon">contact_page</span><span class="friend-text">Friends ({{ friends|length }})</span>
+                                    <span class="material-icons me-1 friends-icon">contact_page</span><span class="friend-text">Friends ({{ friends|length }})</span>
                                 </div>
                             </a>
                         </div>
@@ -147,7 +147,7 @@
                             <div class="d-flex flex-column pt-4">
                                 <a href="{% url 'friend-requests' user_id=id %}">
                                     <div class="d-flex flex-row align-items-center justify-content-center icon-container">
-                                        <span class="material-icons mr-2 person-add-icon">person_add</span><span class="friend-text">Friend Requests ({{ friend_requests|length }})</span>
+                                        <span class="material-icons me-1 person-add-icon">person_add</span><span class="friend-text">Friend Requests ({{ friend_requests|length }})</span>
                                     </div>
                                 </a>
                             </div>

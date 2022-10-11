@@ -35,6 +35,7 @@ from SocialSite.views import (
     friend_list_view,
     remove_friend,
     friend_requests_view,
+    create_post_lists_job,
 
 )
 import debug_toolbar
@@ -58,6 +59,7 @@ urlpatterns = [
     path('friend/friend_request/<user_id>/', friend_requests_view, name="friend-requests"),
     path('register/', register_view, name='register'),
     path('search/', account_search_view, name='search'),
+    path('utils/create/', create_post_lists_job, name='create-list-post'),
 
 ]
 
