@@ -5,7 +5,7 @@ from django.conf import settings
 from .models import Account, FriendList, FriendRequest, PostList, Post
 from .friend_request_status import FriendRequestStatus
 from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
-from .utils import get_friend_request_or_false
+from .utils import get_friend_request_or_false, create_post_list_jobs
 import json
 
 
@@ -444,5 +444,8 @@ def account_posts_view(request, *args, **kwargs):
     return HttpResponse(request, "SocialSite/Post/Posts")
 
 
-
-
+def create_post_lists_job(request):
+    user = request.user
+    if user.is_authenticated:
+        create_post_list_jobs(request)
+    return HttpResponse("Success")
