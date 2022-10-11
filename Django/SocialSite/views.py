@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.conf import settings
-from .models import Account, FriendList, FriendRequest
+from .models import Account, FriendList, FriendRequest, PostList, Post
 from .friend_request_status import FriendRequestStatus
 from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 from .utils import get_friend_request_or_false
@@ -76,12 +76,13 @@ def get_redirect_if_exists(request):
 def account_view(request, *args, **kwargs):
     context = {}
     user_id = kwargs.get("user_id")
-
+    # Get page's Account from DB based on user_id
     try:
         account = Account.objects.get(pk=user_id)
     except Account.DoesNotExist:
         return HttpResponse("That user doesn't exist.")
     if account:
+        # Set necessary fields
         context['id'] = account.id
         context['username'] = account.username
         context['email'] = account.email
@@ -92,6 +93,8 @@ def account_view(request, *args, **kwargs):
         context['bio'] = account.bio
         context['is_private'] = account.isPrivate
 
+        # Get accounts friend list
+        # If it doesn't exist, make one
         try:
             friend_list = FriendList.objects.get(user=account)
         except FriendList.DoesNotExist:
@@ -100,15 +103,30 @@ def account_view(request, *args, **kwargs):
         friends = friend_list.friends.all()
         context['friends'] = friends
 
+        # Set initial variables
         is_self = True
         is_friend = False
         request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
         friend_requests = None
         user = request.user
+        # If user is logged in and is not viewing own profile
         if user.is_authenticated and user != account:
             is_self = False
+            # If user is friend of the account being viewed
             if friends.filter(pk=user.id):
                 is_friend = True
+                # Get accounts post list if friend
+                # If it doesn't exist, make one
+                try:
+                    post_list = PostList.objects.get(user=account)
+                    context['post_list'] = post_list
+                except PostList.DoesNotExist:
+                    post_list = PostList(user=Account)
+                    post_list.save()
+                posts = post_list.posts.all()
+                context['posts'] = posts
+            # If user is not friends with account
+            # Check for friend request
             else:
                 is_friend = False
                 if get_friend_request_or_false(sender=account, receiver=user):
@@ -118,14 +136,19 @@ def account_view(request, *args, **kwargs):
                     request_sent = FriendRequestStatus.YOU_SENT_TO_THEM.value
                 else:
                     request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
+        # If user is not logged in
         elif not user.is_authenticated:
             is_self = False
+
+        # If user is viewing own profile
         else:
+            # Get user's pending friend requests
             try:
                 friend_requests = FriendRequest.objects.filter(receiver=user, is_active=True)
             except:
                 pass
 
+        # Give context necessary variables
         context['is_self'] = is_self
         context['is_friend'] = is_friend
         context['BASE_URL'] = settings.BASE_URL
@@ -369,6 +392,57 @@ def friend_list_view(request, *args, **kwargs):
     else:
         return HttpResponse("You must be friends to view their friends list.")
     return render(request, "SocialSite/Friend/friend_list.html", context)
+
+
+def create_post_view(request, *args, **kwargs):
+    user = request.user
+    return HttpResponse()
+
+
+def create_post(request, *args, **kwargs):
+    user = request.user
+    payload = {}
+    return HttpResponse(json.dumps(json.dumps(payload)), content_type="application/json")
+
+
+def delete_post(request, *args, **kwargs):
+    user = request.user
+    payload = {}
+    return HttpResponse(json.dumps(json.dumps(payload)), content_type="application/json")
+
+
+# View for Account's Post Page --> Not sure if implementing
+def account_posts_view(request, *args, **kwargs):
+    user = request.user
+    context = {}
+    if user.is_authenticated:
+        user_id = kwargs.get("user_id")
+        if user_id:
+            try:
+                this_user = Account.objects.get(pk=user_id)
+                context['this_user'] = this_user
+            except Account.DoesNotExist:
+                return HttpResponse("That user does not exist.")
+            try:
+                friend_list = FriendList.objects.get(user=this_user)
+                context['friend_list'] = friend_list
+            except FriendList.DoesNotExist:
+                return HttpResponse("That user does not have friends list.")
+            try:
+                post_list = PostList.objects.get(user=user_id)
+                context['post_list'] = post_list
+            except PostList.DoesNotExist:
+                return HttpResponse("That user does not have a post list.")
+            posts = []
+            for post in post_list.posts.all():
+                posts.append(post)
+            context['posts'] = posts
+        else:
+            return HttpResponse("Can't access account's posts.")
+    else:
+        return HttpResponse("You must be authenticated to access this page.")
+    return HttpResponse(request, "SocialSite/Post/Posts")
+
 
 
 
