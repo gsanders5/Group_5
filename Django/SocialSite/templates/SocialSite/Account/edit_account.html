@@ -35,7 +35,7 @@
 
     <div class="container-fluid">
         <div class="d-flex flex-row justify-content-center flex-wrap align-items-start">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <div class="card profile-card m-2">
                     <div class="card-body">
                         <div class="d-flex flex-column justify-content-center p-4">
@@ -61,7 +61,7 @@
                                 <input type="text" name="last_name" id="id_input_last_name" class="form-control" placeholder="Last Name" required autofocus value={{form.initial.last_name}}>
                                 <h6 class="mt-4 field-heading">Bio</h6>
                                 <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Write your bio here" id="id_input_bio" name="bio">{{ form.initial.bio }}</textarea>
+                                    <textarea class="form-control" placeholder="Write your bio here" id="id_input_bio" style="height: 100px;" name="bio">{{ form.initial.bio }}</textarea>
                                     <label for="id_input_bio">Bio</label>
                                 </div>
                                 <div class="mt-4 checkbox">

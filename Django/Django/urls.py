@@ -35,6 +35,7 @@ from SocialSite.views import (
     friend_list_view,
     remove_friend,
     friend_requests_view,
+    create_post_lists_job,
 
 )
 import debug_toolbar
@@ -53,12 +54,12 @@ urlpatterns = [
     path('friend/cancel_friend_request/', cancel_friend_request, name="friend-request-cancel"),
     path('friend/decline_friend_request/', decline_friend_request, name="friend-request-decline"),
     path('friend/friend_list/<user_id>/', friend_list_view, name="friend-list"),
-
     path('friend/friend_remove/', remove_friend, name="remove-friend"),
     path('friend/friend_request/', send_friend_request, name="friend-request"),
     path('friend/friend_request/<user_id>/', friend_requests_view, name="friend-requests"),
     path('register/', register_view, name='register'),
     path('search/', account_search_view, name='search'),
+    path('utils/create/', create_post_lists_job, name='create-list-post'),
 
 ]
 

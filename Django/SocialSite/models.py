@@ -57,8 +57,6 @@ class Account(AbstractBaseUser):
     hide_email = models.BooleanField(default=True)
     isPrivate = models.BooleanField(default='True')
 
-    friendsList = models.ForeignKey('FriendList', on_delete=models.CASCADE, null=True)
-    postList = models.ForeignKey('PostList', on_delete=models.CASCADE, null=True)
 
     objects = MyAccountManager()
 
@@ -77,11 +75,11 @@ class Account(AbstractBaseUser):
     def get_profile_image_filename(self):
         return str(self.profile_image)[str(self.profile_image).index(f'profile_images/{self.pk}/'):]
 
+
 @receiver(post_save, sender=Account)
 def user_save(sender, instance, **kwargs):
     FriendList.objects.get_or_create(user=instance)
-
-# Friend List implementation: https://www.youtube.com/watch?v=hyJO4mkdwuM&list=PLgCYzUzKIBE9KUJZJUmnDFYQfVyXYjX6r&index=15
+    PostList.objects.get_or_create(user=instance)
 
 
 class FriendList(models.Model):
@@ -144,15 +142,19 @@ class FriendRequest(models.Model):
 
 
 class Post(models.Model):
-    userId = models.IntegerField()
     numOfLikes = models.IntegerField(default='0')
-    content = models.TextField()
-    # image = models.ImageField() -> need to handle storage to implement
+    description = models.TextField()
+    image = models.ImageField(null=True, blank=True)
     createdAt = models.DateTimeField()
-    usersWhoLiked = models.ManyToManyField('Account', blank=True, related_name='users_who_liked')
+    # usersWhoLiked = models.ManyToManyField('Account', blank=True, related_name='users_who_liked')
 
     def __str__(self):
         return "PostId: " + str(self.id) + " PostedBy: " + str(self.userId)
+
+
+@receiver(post_save, sender=Post)
+def post_save(sender, instance, **kwargs):
+    PostList.objects.get_or_create(post=instance)
 
 
 class PostList(models.Model):
@@ -169,3 +171,19 @@ class PostList(models.Model):
 
     def __str__(self):
         return "UserId: " + str(self.user.id) + " PostListId: " + str(self.id)
+
+
+class Comment(models.Model):
+    user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='commenter')
+    content = models.TextField()
+    createdAt = models.DateTimeField(auto_now_add=True)
+
+
+class CommentList(models.Model):
+    post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name='postComment')
+    comments = models.OneToOneField(Comment, on_delete=models.CASCADE, related_name='comments')
+
+
+
+
+

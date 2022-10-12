@@ -67,58 +67,41 @@
     </style>
 
     <div class="container-fluid">
-        <div class="d-flex flex-row justify-content-center flex-wrap align-items-start">
-            <div class="col-sm-3">
-                <div class="card profile-card m-2">
-                    <div class="card-body">
-                        <div class="d-flex flex-column justify-content-center p-4">
-                            <div class="image-container mx-auto mb-4">
-                                <img class="d-block border border-dark rounded-circle img-fluid mx-auto profile-image" alt="default image logo" id="id_profile_image" src="{{profile_image}}">
-                            </div>
-                            <p class="mt-4 mb-1 field-heading">Email</p>
-                            {%  if is_self %}
-                                <h5>{{email}}</h5>
-                            {% else %}
-                                {% if hide_email %}
-                                    <h5>**********</h5>
-                                {% else %}
-                                    <h5>{{email}}</h5>
+        <div class="d-flex flex-row justify-content-center flex-wrap align-items-center">
+            <div class="col-6">
+                <div class="card">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-md-4 p-4">
+                            <img class="d-block border border-dark rounded-circle img-fluid mx-auto profile-image" alt="default image logo" id="id_profile_image" src="{{profile_image}}">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <p class="fw-light fs-5 mb-1">{{ first_name }} {{ last_name }}</p>
+                                <p class="fw-light fs-6">@{{ username }}</p>
+                                <p class="overflow-auto card-text">{{bio}}</p>
+                                {% if is_self %}
+                                    <div class="d-flex justify-content-end pe-3">
+                                        <a class="btn btn-secondary btn-sm" href="{% url 'edit' user_id=id %}">Update</a>
+                                    </div>
                                 {% endif %}
-                            {% endif %}
-                            <p class="mt-4 mb-1 field-heading">Username</p>
-                            <h5>{{username}}</h5>
-                            <p class="mt-4 mb-1 field-heading">First Name</p>
-                            <h5>{{first_name}}</h5>
-                            <p class="mt-4 mb-1 field-heading">Last Name</p>
-                            <h5>{{last_name}}</h5>
-                            <p class="mt-4 mb-1 field-heading">Bio</p>
-                            <p class="overflow-auto">{{bio}}</p>
-                            {% if is_self %}
-                                <a  class="mt-4 btn btn-primary" href="{% url 'edit' user_id=id %}">Update</a>
-                                <div class="d-flex flex-column mt-4">
-                                    <a class="m-auto" href="">Change password</a>
-                                </div>
-                            {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="d-flex flex-row justify-content-center flex-wrap align-items-start">
             {% if request.user.is_authenticated %}
                 <div class="d-flex flex-column mb-4">
-
                     {% if request_sent == 0 %}
-                        <div class="card m-2 p-4">
+                        <div class="card ms-2 mb-2 p-4">
                             <div class="d-flex flex-row align-items-center">
-                                <span class="friend-text align-items-center mr-2">Accept Friend Request</span>
+                                <span class="friend-text align-items-center me-1 pt-1">Accept Friend Request</span>
                                 <span id="id_cancel_{{id}}" class="decline-friend-request material-icons p-1" onclick='triggerDeclineFriendRequest("{{pending_friend_request_id}}")'>cancel</span>
                                 <span id="id_confirm_{{id}}" class="confirm-friend-request material-icons p-1" onclick='triggerAcceptFriendRequest("{{pending_friend_request_id}}")'>check</span>
                             </div>
                         </div>
                     {% endif %}
 
-                    <div class="card m-2 px-4 pb-4">
+                    <div class="card px-4 pb-4 ms-2">
                         {% if is_friend == False and is_self == False %}
                             {% if request_sent == 1 %}
                                 <div class="d-flex flex-column align-items-center pt-4">
@@ -151,7 +134,7 @@
                         <div class="d-flex flex-column pt-4">
                             <a href="{% url 'friend-list' user_id=id %}">
                                 <div class="d-flex flex-row align-items-center justify-content-center icon-container">
-                                    <span class="material-icons mr-2 friends-icon">contact_page</span><span class="friend-text">Friends ({{ friends|length }})</span>
+                                    <span class="material-icons me-1 friends-icon">contact_page</span><span class="friend-text">Friends ({{ friends|length }})</span>
                                 </div>
                             </a>
                         </div>
@@ -160,11 +143,11 @@
 
                     <!-- TODO -->
                     {% if friend_requests %}
-                        <div class="card m-2 px-4 pb-4">
+                        <div class="card ms-2 mt-2 px-4 pb-4">
                             <div class="d-flex flex-column pt-4">
                                 <a href="{% url 'friend-requests' user_id=id %}">
                                     <div class="d-flex flex-row align-items-center justify-content-center icon-container">
-                                        <span class="material-icons mr-2 person-add-icon">person_add</span><span class="friend-text">Friend Requests ({{ friend_requests|length }})</span>
+                                        <span class="material-icons me-1 person-add-icon">person_add</span><span class="friend-text">Friend Requests ({{ friend_requests|length }})</span>
                                     </div>
                                 </a>
                             </div>
@@ -172,8 +155,120 @@
                     {% endif %}
                 </div>
             {% endif %}
+
         </div>
     </div>
+
+
+
+    {#    <div class="container-fluid">#}
+    {#        <div class="d-flex flex-row justify-content-center flex-wrap align-items-start">#}
+    {#            <div class="col-sm-3">#}
+    {#                <div class="card profile-card m-2">#}
+    {#                    <div class="card-body">#}
+    {#                        <div class="d-flex flex-column justify-content-center p-4">#}
+    {#                            <div class="image-container mx-auto mb-4">#}
+    {#                                <img class="d-block border border-dark rounded-circle img-fluid mx-auto profile-image" alt="default image logo" id="id_profile_image" src="{{profile_image}}">#}
+    {#                            </div>#}
+    {#                            <p class="mt-4 mb-1 field-heading">Email</p>#}
+    {#                            {%  if is_self %}#}
+    {#                                <h5>{{email}}</h5>#}
+    {#                            {% else %}#}
+    {#                                {% if hide_email %}#}
+    {#                                    <h5>**********</h5>#}
+    {#                                {% else %}#}
+    {#                                    <h5>{{email}}</h5>#}
+    {#                                {% endif %}#}
+    {#                            {% endif %}#}
+    {#                            <p class="mt-4 mb-1 field-heading">Username</p>#}
+    {#                            <h5>{{username}}</h5>#}
+    {#                            <p class="mt-4 mb-1 field-heading">First Name</p>#}
+    {#                            <h5>{{first_name}}</h5>#}
+    {#                            <p class="mt-4 mb-1 field-heading">Last Name</p>#}
+    {#                            <h5>{{last_name}}</h5>#}
+    {#                            <p class="mt-4 mb-1 field-heading">Bio</p>#}
+    {#                            <p class="overflow-auto">{{bio}}</p>#}
+    {#                            {% if is_self %}#}
+    {#                                <a  class="mt-4 btn btn-primary" href="{% url 'edit' user_id=id %}">Update</a>#}
+    {#                                <div class="d-flex flex-column mt-4">#}
+    {#                                    <a class="m-auto" href="">Change password</a>#}
+    {#                                </div>#}
+    {#                            {% endif %}#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#        <div class="d-flex flex-row justify-content-center flex-wrap align-items-start">#}
+    {#            {% if request.user.is_authenticated %}#}
+    {#                <div class="d-flex flex-column mb-4">#}
+    {##}
+    {#                    {% if request_sent == 0 %}#}
+    {#                        <div class="card m-2 p-4">#}
+    {#                            <div class="d-flex flex-row align-items-center">#}
+    {#                                <span class="friend-text align-items-center mr-2">Accept Friend Request</span>#}
+    {#                                <span id="id_cancel_{{id}}" class="decline-friend-request material-icons p-1" onclick='triggerDeclineFriendRequest("{{pending_friend_request_id}}")'>cancel</span>#}
+    {#                                <span id="id_confirm_{{id}}" class="confirm-friend-request material-icons p-1" onclick='triggerAcceptFriendRequest("{{pending_friend_request_id}}")'>check</span>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    {% endif %}#}
+    {##}
+    {#                    <div class="card m-2 px-4 pb-4">#}
+    {#                        {% if is_friend == False and is_self == False %}#}
+    {#                            {% if request_sent == 1 %}#}
+    {#                                <div class="d-flex flex-column align-items-center pt-4">#}
+    {#                                    <button class="btn btn-danger" id="id_cancel_friend_request_btn">#}
+    {#                                        Cancel Friend Request#}
+    {#                                    </button>#}
+    {#                                </div>#}
+    {#                            {% endif %}#}
+    {#                            {% if request_sent == -1 %}#}
+    {#                                <div class="d-flex flex-column align-items-center pt-4">#}
+    {#                                    <button class="btn btn-primary" id="id_send_friend_request_btn">#}
+    {#                                        Send Friend Request#}
+    {#                                    </button>#}
+    {#                                </div>#}
+    {#                            {% endif %}#}
+    {#                        {% endif %}#}
+    {##}
+    {##}
+    {#                        {% if is_friend %}#}
+    {#                            <div class="dropdown pt-4 m-auto">#}
+    {#                                <button class="btn btn-secondary dropdown-toggle friends-btn" role="button" type="button" id="id_friends_toggle" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+    {#                                    Friends#}
+    {#                                </button>#}
+    {#                                <ul class="dropdown-menu" role="menu" aria-labelledby="id_friends_toggle">#}
+    {#                                    <li><a class="dropdown-item" role="menuitem" href="#" onclick="removeFriend('{{id}}', onFriendRemoved)">Unfriend</a></li>#}
+    {#                                </ul>#}
+    {#                            </div>#}
+    {#                        {% endif %}#}
+    {##}
+    {#                        <div class="d-flex flex-column pt-4">#}
+    {#                            <a href="{% url 'friend-list' user_id=id %}">#}
+    {#                                <div class="d-flex flex-row align-items-center justify-content-center icon-container">#}
+    {#                                    <span class="material-icons mr-2 friends-icon">contact_page</span><span class="friend-text">Friends ({{ friends|length }})</span>#}
+    {#                                </div>#}
+    {#                            </a>#}
+    {#                        </div>#}
+    {##}
+    {#                    </div>#}
+    {##}
+    {#                    <!-- TODO -->#}
+    {#                    {% if friend_requests %}#}
+    {#                        <div class="card m-2 px-4 pb-4">#}
+    {#                            <div class="d-flex flex-column pt-4">#}
+    {#                                <a href="{% url 'friend-requests' user_id=id %}">#}
+    {#                                    <div class="d-flex flex-row align-items-center justify-content-center icon-container">#}
+    {#                                        <span class="material-icons mr-2 person-add-icon">person_add</span><span class="friend-text">Friend Requests ({{ friend_requests|length }})</span>#}
+    {#                                    </div>#}
+    {#                                </a>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    {% endif %}#}
+    {#                </div>#}
+    {#            {% endif %}#}
+    {#        </div>#}
+    {#    </div>#}
 
 
     <script type="text/javascript">
