@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="{% static 'cropperjs/dist/cropper.min.css' %}">
+
     <title>SocialSite</title>
 </head>
 <body>
@@ -14,7 +16,13 @@
 {%  include 'snippets/base_js.html' %}
 {%  include 'snippets/header.html' %}
 
-
+<div class="container" id="id_loading_spinner" style="display: none;">
+    <div class="d-flex flex-row mx-auto flex-grow-1 justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>
 
 <style type="text/css">
     .main {
@@ -33,6 +41,18 @@
 
 <script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="module" src="{% static 'cropperjs/dist/cropper.min.js' %}"></script>
+<script type="text/javascript">
+    function displayLoadingSpinner(isDisplayed) {
+        var spinner = document.getElementById("id_loading_spinner")
+        if (isDisplayed) {
+            spinner.style.display = "block"
+        }
+        else {
+            spinner.style.display = "none"
+        }
+    }
+</script>
 
 
 </body>

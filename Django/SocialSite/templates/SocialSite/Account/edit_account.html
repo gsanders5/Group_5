@@ -39,18 +39,18 @@
                 <div class="card profile-card m-2">
                     <div class="card-body">
                         <div class="d-flex flex-column justify-content-center p-4">
-                            {#                            <div class="mb-2" id="id_image_crop_confirm">#}
-                            {#                                <span id="id_cancel" class="material-icons">cancel</span>#}
-                            {#                                <span id="id_confirm" class="material-icons">check</span>#}
-                            {#                            </div>#}
-                            <div class="mx-auto mb-4 image-container" id="id_image_container">
-                                <img class="border border-dark rounded-circle img-fluid mx-auto profile-image" id="id_profile_image" src="{{form.initial.profile_image.url}}" alt="default profile logo">
-                                {#                        <div class="middle" id="id_middle_container">#}
-                                {#                            <div class="text" id="id_text">Edit</div>#}
-                                {#                        </div>#}
+                            <div class="mb-2" id="id_image_crop_confirm">
+                                <span id="id_cancel" class="material-icons">cancel</span>
+                                <span id="id_confirm" class="material-icons">check</span>
                             </div>
-                            <form class="form-signin" method="post">{% csrf_token %}
-                                <input class="d-none" type="file" id="id_profile_image_file_selector" name="profile_image_file_selector" onchange="readURL(this)">
+                            <div class="mx-auto mb-4 image-container" id="id_image_container">
+                                <img class="border border-dark rounded-circle img-fluid mx-auto profile-image" id="id_profile_image_display" src="{{form.initial.profile_image.url}}" alt="default profile logo">
+                                <div class="middle" id="id_middle_container">
+                                    <div class="text" id="id_text">Edit</div>
+                                </div>
+                            </div>
+                            <form class="form-signin" method="post" enctype="multipart/form-data">{% csrf_token %}
+                                <input class="d-none" type="file" id="id_profile_image" name="profile_image" onchange="readURL(this)">
                                 <h6 class="mt-4 field-heading">Email</h6>
                                 <input type="email" name="email" id="id_input_email" class="form-control" placeholder="Email address" required autofocus value={{form.initial.email}}>
                                 <h6 class="mt-4 field-heading">Username</h6>
@@ -97,12 +97,7 @@
         </div>
     </div>
 
-
-    <script type="text/javascript">
-        function readURL(imageUrl){
-            // TODO
-        }
-    </script>
+    {% include 'SocialSite/Account/edit_account_js.html' %}
 
 
 {% endblock content %}

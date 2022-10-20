@@ -1,6 +1,6 @@
 {% load static %}
 
-<div class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+<div class="navbar navbar-expand-lg navbar-light bg-light mb-4 shadow-sm">
 
     <div class="container-fluid p-3 d-flex">
         <a class="navbar-brand ms-4 me-4 fw-normal" href="{% url 'home' %}">SocialSite</a>
@@ -8,18 +8,21 @@
             <input type="text" class="form-control" name="q" id="id_q" placeholder="Search" >
         </form>
         <div class="flex-grow-1"></div>
-        <div class="me-4">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="me-4 collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             {%  if request.user.is_authenticated %}
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center">
-                    <li class="navbar-text">Welcome Back, {{ request.user.username }}!</li>
+                <ul class="navbar-nav  mb-2 mb-lg-0 align-items-center d-flex">
+                    <li class="navbar-text pe-2 d-xs-none">Welcome Back, {{ request.user.username }}!</li>
                     <li class="nav-item dropstart align-items-center p-2">
                         <a class="d-flex notifications-icon-container rounded-circle align-items-center mr-3" href="#" id="id_notifications_dropdown_toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span id="id_notifications_count" class="notify-badge"></span>
-                            <span class="d-flex material-icons notifications-material-icon m-auto align-items-center">notifications</span>
+                            <span class="d-flex material-icons notifications-material-icon m-auto align-items-center fs-3">notifications</span>
                             <div class="dropdown-menu" style="max-height: 20vh; overflow-y: scroll" aria-labelledby="id_notifications_dropdown_toggle" id="id_general_notifications_container"></div>
                         </a>
                     </li>
-                    <li class="nav-item dropstart align-items-center">
+                    <li class="nav-item dropstart align-items-center p-1">
                         <a class="m-auto" href="#" id="id_profile_links" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img class="account-image rounded-circle m-auto d-block" id="id_profile_links" src="{{ request.user.profile_image.url }}" alt="default profile image" width="40" height="40">
                         </a>

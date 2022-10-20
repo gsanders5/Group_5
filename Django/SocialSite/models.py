@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.core.files.storage import default_storage
 from django.utils import timezone
 
 
@@ -33,8 +34,8 @@ class MyAccountManager(BaseUserManager):
         return user
 
 
-def get_profile_image_filepath(self):
-    return f'profile_images/{self.pk}/{"profile_image.png"}'
+def get_profile_image_filepath(self, filename):
+    return 'profile_images/' + str(self.pk) + '/profile_image.png'
 
 
 def get_default_profile_image():
@@ -80,6 +81,8 @@ class Account(AbstractBaseUser):
 def user_save(sender, instance, **kwargs):
     FriendList.objects.get_or_create(user=instance)
     PostList.objects.get_or_create(user=instance)
+    if instance.profile_image is None:
+        instance.profile_image.url = "media/defaultProfileImage.png"
 
 
 class FriendList(models.Model):
