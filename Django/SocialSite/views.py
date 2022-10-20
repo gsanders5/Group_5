@@ -2,14 +2,21 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.conf import settings
+from django.core.files.storage import default_storage
+from django.core.files.storage import FileSystemStorage
+from django.core import files
 from .models import Account, FriendList, FriendRequest, PostList, Post
 from .friend_request_status import FriendRequestStatus
 from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 from .utils import get_friend_request_or_false, create_post_list_jobs
+import os
+import cv2
+import base64
+import requests
 import json
 
+TEMP_PROFILE_IMAGE_NAME = "temp_profile_image.png"
 
-# implementation of sample API: https://www.youtube.com/watch?v=0UKWcv0og-Y&list=PLgCYzUzKIBE9KUJZJUmnDFYQfVyXYjX6r&index=1
 
 def register_view(request, *args, **kwargs):
     user = request.user
@@ -366,6 +373,7 @@ def cancel_friend_request(request, *args, **kwargs):
     return HttpResponse(json.dumps(json.dumps(payload)), content_type="application/json")
 
 
+# Displays account's Friend List
 def friend_list_view(request, *args, **kwargs):
     user = request.user
     context = {}
@@ -392,6 +400,8 @@ def friend_list_view(request, *args, **kwargs):
     else:
         return HttpResponse("You must be friends to view their friends list.")
     return render(request, "SocialSite/Friend/friend_list.html", context)
+
+
 
 
 def create_post_view(request, *args, **kwargs):
@@ -444,8 +454,73 @@ def account_posts_view(request, *args, **kwargs):
     return HttpResponse(request, "SocialSite/Post/Posts")
 
 
+# Create Post Lists for existing accounts
 def create_post_lists_job(request):
     user = request.user
     if user.is_authenticated:
         create_post_list_jobs(request)
     return HttpResponse("Success")
+
+
+def save_temp_profile_image_from_base64String(imageString, user):
+    INCORRECT_PADDING_EXCEPTION = "Incorrect padding"
+    try:
+        if not os.path.exists(settings.TEMP):
+            os.mkdir(settings.TEMP)
+        if not os.path.exists(settings.TEMP + "/" + str(user.pk)):
+            os.mkdir(settings.TEMP + "/" + str(user.pk))
+        url = os.path.join(f"{settings.TEMP}/{user.pk}", TEMP_PROFILE_IMAGE_NAME)
+        storage = FileSystemStorage(location=url)
+        image = base64.b64decode(imageString)
+        with storage.open('', 'wb+') as destination:
+            destination.write(image)
+            destination.close()
+        return url
+    except Exception as e:
+        if str(e) == INCORRECT_PADDING_EXCEPTION:
+            imageString += "=" * ((4 - len(imageString) % 4) % 4)
+            return save_temp_profile_image_from_base64String(imageString, user)
+    return None
+
+
+def crop_image(request, *args, **kwargs):
+    payload = {}
+    user = request.user
+    if request.POST and user.is_authenticated:
+        try:
+            imageString = request.POST.get("image")
+            url = save_temp_profile_image_from_base64String(imageString, user)
+            img = cv2.imread(url)
+
+            cropX = int(float(str(request.POST.get("cropX"))))
+            cropY = int(float(str(request.POST.get("cropY"))))
+            cropWidth = int(float(str(request.POST.get("cropWidth"))))
+            cropHeight = int(float(str(request.POST.get("cropHeight"))))
+            if cropX < 0:
+                cropX = 0
+            if cropY < 0:
+                cropY = 0
+            crop_img = img[cropY:cropY + cropHeight, cropX:cropX + cropWidth]
+
+            cv2.imwrite(url, crop_img)
+
+
+            # delete the old image
+            # if user.profile_image.name !=
+            user.profile_image.delete()
+
+            # Save the cropped image to user model
+            user.profile_image.save("profile_image.png", files.File(open(url, 'rb')))
+            user.save()
+
+            payload['result'] = "success"
+            payload['cropped_profile_image'] = user.profile_image.url
+
+            # delete temp file
+            os.remove(url)
+
+        except Exception as e:
+            print("exception: " + str(e))
+            payload['result'] = "error"
+            payload['exception'] = str(e)
+    return HttpResponse(json.dumps(payload), content_type="application/json")

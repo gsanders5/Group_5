@@ -54,7 +54,7 @@
 				</div>
 			</a>
 
-			<div class="card-center px-2">
+			<div class="card-center px-2 pt-2">
 				<a class="profile-link" href="{% url 'view' user_id=friend.0.pk %}">
 					<h4 class="card-title">{{friend.0.username|truncatechars:50}}</h4>
 				</a>
@@ -66,7 +66,7 @@
 						<p class="friends-text m-auto">
 							Friends
 						</p>
-						<span class="material-icons checkmark-icon m-auto pl-2">
+						<span class="material-icons checkmark-icon m-auto ps-1">
 						check_circle_outline
 						</span>
 					</div>
@@ -76,7 +76,7 @@
 							<p class="friends-text m-auto">
 								Not Friends
 							</p>
-							<span class="material-icons cancel-icon m-auto pl-2">cancel</span>
+							<span class="material-icons cancel-icon m-auto ps-1">cancel</span>
 						</div>
 					{% endif %}
 				{% endif %}
@@ -85,7 +85,7 @@
 						<p class="friends-text m-auto">
 							This is you
 						</p>
-						<span class="material-icons m-auto pl-2">
+						<span class="material-icons m-auto ps-1">
 						person_pin
 						</span>
 					</div>

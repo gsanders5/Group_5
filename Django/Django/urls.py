@@ -36,7 +36,7 @@ from SocialSite.views import (
     remove_friend,
     friend_requests_view,
     create_post_lists_job,
-
+    crop_image,
 )
 import debug_toolbar
 
@@ -48,6 +48,7 @@ urlpatterns = [
     path('', home_screen_view, name='home'),
     path('account/<user_id>/', account_view, name='view'),
     path('account/<user_id>/edit/', edit_account_view, name='edit'),
+    path('account/<user_id>/edit/cropImage', crop_image, name='crop-image'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('friend/accept_friend_request/<friend_request_id>/', accept_friend_request, name="friend-request-accept"),
