@@ -42,6 +42,15 @@ def get_default_profile_image():
     return "media/defaultProfileImage.png"
 
 
+def get_default_post_image():
+    return "media/defaultPostImage.png"
+
+
+def get_profile_image_directory(self, filename):
+    return "profile_images/" + filename
+
+
+
 class Account(AbstractBaseUser):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
@@ -57,7 +66,6 @@ class Account(AbstractBaseUser):
     profile_image = models.ImageField(max_length=255, upload_to=get_profile_image_filepath, null=True, blank=True, default=get_default_profile_image)
     hide_email = models.BooleanField(default=True)
     isPrivate = models.BooleanField(default='True')
-
 
     objects = MyAccountManager()
 
@@ -145,11 +153,30 @@ class FriendRequest(models.Model):
 
 
 class Post(models.Model):
-    numOfLikes = models.IntegerField(default='0')
-    description = models.TextField()
-    image = models.ImageField(null=True, blank=True)
-    createdAt = models.DateTimeField()
-    # usersWhoLiked = models.ManyToManyField('Account', blank=True, related_name='users_who_liked')
+    num_of_likes = models.IntegerField(default='0')
+    text_content = models.TextField(blank=True, null=True)
+    image = models.ImageField(null=True, blank=True, upload_to=get_profile_image_directory, default=get_default_post_image)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_image = models.BooleanField(default=False)
+    is_shared_post = models.BooleanField(default=False)
+    shared_post = models.OneToOneField('Post', blank=True, null=True, on_delete=models.CASCADE)
+    usersWhoLiked = models.ManyToManyField('Account', blank=True, related_name='users_who_liked')
+
+    def like_post(self, account: Account):
+        if account not in self.usersWhoLiked.all():
+            self.usersWhoLiked.add(account)
+        self.num_of_likes = self.usersWhoLiked.count()
+        self.save()
+
+        return self.num_of_likes
+
+    def unlike_post(self, account: Account):
+        if account in self.usersWhoLiked.all():
+            self.usersWhoLiked.remove(account)
+        self.num_of_likes = self.usersWhoLiked.count()
+        self.save()
+
+        return self.num_of_likes
 
     def __str__(self):
         return "PostId: " + str(self.id) + " PostedBy: " + str(self.userId)
@@ -157,7 +184,7 @@ class Post(models.Model):
 
 @receiver(post_save, sender=Post)
 def post_save(sender, instance, **kwargs):
-    PostList.objects.get_or_create(post=instance)
+    CommentList.objects.get_or_create(post=instance)
 
 
 class PostList(models.Model):
@@ -165,11 +192,11 @@ class PostList(models.Model):
     posts = models.ManyToManyField('Post', blank=True, related_name='posts')
 
     def add_post(self, post: Post):
-        if post not in self.posts:
+        if post not in self.posts.all():
             self.posts.add(post)
 
     def remove_post(self, post: Post):
-        if post in self.posts:
+        if post in self.posts.all():
             self.posts.remove(post)
 
     def __str__(self):
@@ -184,7 +211,7 @@ class Comment(models.Model):
 
 class CommentList(models.Model):
     post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name='postComment')
-    comments = models.OneToOneField(Comment, on_delete=models.CASCADE, related_name='comments')
+    comments = models.ManyToManyField('Comment', related_name='comments', blank=True)
 
 
 

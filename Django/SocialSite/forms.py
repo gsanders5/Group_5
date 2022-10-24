@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
+from .models import Account, Post, PostList
 
-from .models import Account
 
 
 class RegistrationForm(UserCreationForm):
@@ -81,3 +81,17 @@ class AccountUpdateForm(forms.ModelForm):
         if commit:
             account.save()
         return account
+
+
+class PostCreationForm(forms.ModelForm):
+    # def __init__(self, user, *args, **kwargs):
+    #     self.user = kwargs.pop('user', None)
+    #     super(PostCreationForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Post
+        fields = ('text_content', 'is_image')
+
+
+
+

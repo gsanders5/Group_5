@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="d-flex flex-row justify-content-center flex-wrap align-self-start">
+            <div class="col-sm-4">
+                <div class="card profile-card m-2">
+                    <div class="card-header d-flex">
+                        <div class="row align-items-center">
+                            <div class="col pe-0">
+                                <a class="text-reset" href="{% url 'view' user_id=account_id %}">
+                                    <img class="account-image rounded-circle m-auto d-block" id="id_profile_links" src="{{ request.user.profile_image.url }}" alt="default profile image" width="40" height="40">
+                                </a>
+                            </div>
+                            <div class="col">
+                                <a class="text-reset" href="{% url 'view' user_id=account_id %}">
+                                    <div class="fw-light fs-5 ">@{{ username }}</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body m-0">
+                        <div class="flex-column">
+                            {% if post_has_image %}
+                                <div class="flex-row">
+                                    <div class="p-3 pt-0">
+                                        <img class="d-block border border-dark img-fluid mx-auto " alt="post image" id="id_profile_image" src="{{post_image}}">
+                                    </div>
+                                </div>
+                                <div class="fs-6 fw-light flex-row align-items-center d-flex">
+
+                                    <div class="d-inline-flex align-items-center mb-2">
+                                        <span class="material-icons pe-1" id="likeButton"  style="font-size: 18px;"><a
+                                                href="#" class="text-reset">favorite</a></span>
+                                        Likes: {{ num_of_likes }}
+                                    </div>
+                                    <div class="flex-grow-1"></div>
+                                    <div class="d-inline-flex align-items-center mb-2">
+                                         <span class="material-icons pe-1" id="shareButton"  style="font-size: 18px;"><a
+                                                 href="" class="text-reset">share</a>
+                                         </span>
+                                    </div>
+                                </div>
+                                {#                                comments go here#}
+                                <div class="flex-row">
+
+                                    <p class="overflow-auto card-text">
+                                        <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">
+                                            {{ username }}
+                                        </a></strong>: {{text_content}}
+                                    </p>
+                                </div>
+
+                            {% endif %}
+                            {% if not post_has_image %}
+                                <div class="flex-row">
+
+                                    <p class="overflow-auto card-text">
+                                        <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">
+                                            {{ username }}
+                                        </a></strong>: {{text_content}}
+                                    </p>
+                                </div>
+
+                            {% endif %}
+                            <div class="d-flex flex-row justify-content-end mt-3">
+                                <div class="fs-6 fw-light text-muted">{{ created_at }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    {% include 'SocialSite/Post/like_post_request.html' %}
+    {% include 'SocialSite/Post/post_js.html' %}
+
+
+
+{% endblock content %}
