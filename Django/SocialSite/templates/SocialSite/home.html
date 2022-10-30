@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <div class="d-flex justify-content-center">
+            <div class="col-6">
+                {% for obj in posts %}
+                    {% if obj.post.is_image %}
+                        <div class="card mb-3 border-start-0" style="width: 100%;">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-md-4">
+                                    <a href="{% url "post" user_id=obj.friend.id post_id=obj.post.id%}">
+                                        <img class="img-fluid rounded-start" style="width: 75%;" src="{{ obj.post.image.url }}" alt="post image">
+                                    </a>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <div class="card-text">
+                                            {{ obj.post.text_content }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer align-items-center d-flex">
+                                <div class="pe-0 me-2">
+                                    <a class="text-reset" href="{% url 'view' user_id=obj.friend.id %}">
+                                        <img class="account-image rounded-circle m-auto d-block" id="id_profile_links" src="{{ obj.friend.profile_image.url }}" alt="default profile image" width="40" height="40">
+                                    </a>
+                                </div>
+                                <div class="d-inline-flex">@{{ obj.friend.username }}</div>
+                                <div class="flex-grow-1"></div>
+
+                                <div class="d-inline-flex align-items-center me-2">
+                                        <span class="material-icons pe-1" id="likeButton"  style="font-size: 24px;"><a
+                                                href="#" class="text-reset">favorite</a></span>
+                                    <div>Likes: {{ obj.post.num_of_likes }}</div>
+                                </div>
+                                <div class="d-inline-flex align-items-center">
+                                         <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
+                                                 href="" class="text-reset">share</a>
+                                         </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="card mb-3" style="width: 100%;">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-md-12">
+                                    <div class="card-body">
+                                        <div class="card-text">
+                                            {{ obj.post.text_content }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer align-items-center d-flex">
+                                <div class="pe-0 me-2">
+                                    <a class="text-reset" href="{% url 'view' user_id=obj.friend.id %}">
+                                        <img class="account-image rounded-circle m-auto d-block" id="id_profile_links" src="{{ obj.friend.profile_image.url }}" alt="default profile image" width="40" height="40">
+                                    </a>
+                                </div>
+                                <div class="d-inline-flex">@{{ obj.friend.username }}</div>
+                                <div class="flex-grow-1"></div>
+
+                                <div class="d-inline-flex align-items-center me-2">
+                                        <span class="material-icons pe-1" id="likeButton"  style="font-size: 24px;"><a
+                                                href="#" class="text-reset">favorite</a></span>
+                                    <div>Likes: {{ obj.post.num_of_likes }}</div>
+                                </div>
+                                <div class="d-inline-flex align-items-center">
+                                         <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
+                                                 href="" class="text-reset">share</a>
+                                         </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+    {% endif %}
+
+
+{% endblock content %}
+

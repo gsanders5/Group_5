@@ -1,0 +1,41 @@
+<script type="text/javascript">
+
+    function OnLikeOrDislike(){
+        location.reload();
+    }
+
+    let likePostBtn = document.querySelectorAll("#likeButton");
+    if (likePostBtn.length > 0)
+    {
+        likePostBtn.forEach((btn) => {
+            btn.addEventListener("click", function (){
+                debugger;
+                payload = {
+                    "csrfmiddlewaretoken": "{{ csrf_token }}",
+                    "post_id": post_id,
+                }
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    {#url: "{% url 'like-post' post_id=post_id %}",#}
+                    timeout: 5000,
+                    data: payload,
+                    success: function (data) {
+                        if (data.response == "Liked Post.") {
+
+                        } else if (data.response != null) {
+                            alert(data.response);
+                        }
+                    },
+                    error: function (data){
+                        alert("Something went wrong: " + data);
+                    },
+                    complete: function (data){
+                        uiUpdateFunction();
+                    }
+                })
+            })
+        });
+    }
+
+</script>

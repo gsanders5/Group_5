@@ -8,7 +8,7 @@
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: "{% url 'like-post' post_id=post_id %}",
+            {#url: "{% url 'like-post' post_id=post_id %}",#}
             timeout: 5000,
             data: payload,
             success: function (data) {

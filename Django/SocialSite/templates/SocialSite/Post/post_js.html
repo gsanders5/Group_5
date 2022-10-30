@@ -11,26 +11,11 @@
         })
     }
 
-    let cancelFriendRequestBtn = document.getElementById("id_cancel_friend_request_btn")
-    if(cancelFriendRequestBtn != null){
-        cancelFriendRequestBtn.addEventListener("click", function(){
-            cancelFriendRequest("{{id}}", onFriendRequestCancelled)
+    let shareButtonBtn = document.getElementById("shareButton")
+    if (shareButtonBtn != null){
+        shareButtonBtn.addEventListener("click", function(){
+            sharePostRequest("{{post_id}}", OnLikeOrDislike)
         })
-    }
-
-    let removeFriendBtn = document.getElementById("id_unfriend_btn")
-    if (removeFriendBtn != null){
-        removeFriendBtn.addEventListener("click", function(){
-            removeFriend("{{id}}", onFriendRemoved)
-        })
-    }
-
-    function triggerAcceptFriendRequest(friend_request_id){
-        acceptFriendRequest(friend_request_id, onFriendRequestAccepted)
-    }
-
-    function triggerDeclineFriendRequest(friend_request_id){
-        declineFriendRequest(friend_request_id, onFriendRequestDeclined)
     }
 
 </script>

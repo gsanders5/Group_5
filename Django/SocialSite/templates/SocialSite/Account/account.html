@@ -71,8 +71,8 @@
             <div class="col-8 flex-column">
                 <div class="card">
                     <div class="row g-0 align-items-center">
-                        <div class="col-md-3 p-4">
-                            <img class="d-block border border-dark rounded-circle img-fluid mx-auto profile-image" alt="default image logo" id="id_profile_image" src="{{profile_image}}">
+                        <div class="col-md-3 p-4 m-0">
+                            <img class="d-block border border-dark rounded-circle img-fluid mx-auto profile-image" style="width: 75%;" alt="default image logo" id="id_profile_image" src="{{profile_image}}">
                         </div>
                         <div class="col-md-6">
                             <div class="card-body">
@@ -164,13 +164,137 @@
                     <a href="{% url 'create-post' %}" class="btn btn-primary" id="add_post">Add Post</a>
                 </div>
             {% endif %}
-{#            {% for  %}#}
-{#            <div class="row row-cols-1 ">#}
-{##}
-{#            </div>#}
+            <div class="d-flex justify-content-center mt-3">
+                <div class="col-6">
+                    {% for post in posts %}
+                        {% if post.is_shared_post %}
+                            {% if post.shared_post.is_image %}
+                                <div class="card mb-3 border-start-0" style="width: 100%;">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-md-3">
+                                            <a href="{% url "post" user_id=post.shared_post.poster.id post_id=post.shared_post.id%}">
+                                                <img class="img-fluid rounded-start" style="width: 100%;" src="{{ post.shared_post.image.url }}" alt="post image">
+                                            </a>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <div class="card-text">
+                                                    {{ post.shared_post.text_content }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer align-items-center d-flex">
+                                        <div class="d-inline-flex">@{{ username }} sharing @{{ post.shared_post.poster.username }}'s post</div>
+                                        <div class="flex-grow-1"></div>
+
+                                        <div class="d-inline-flex align-items-center me-2">
+                                        <span class="material-icons pe-1" id="likeButton"  style="font-size: 24px;"><a
+                                                href="#" class="text-reset">favorite</a></span>
+                                            <div>Likes: {{ post.shared_post.num_of_likes }}</div>
+                                        </div>
+                                        <div class="d-inline-flex align-items-center">
+                                         <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
+                                                 href="" class="text-reset">share</a>
+                                         </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="card mb-3" style="width: 100%;">
+                                <div class="row g-0 align-items-center">
+                                    <div class="col-md-12">
+                                        <div class="card-body">
+                                            <div class="card-text">
+                                                {{ post.shared_post.text_content }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer align-items-center d-flex">
+                                    <div class="d-inline-flex">@{{  post.shared_post.poster.username }}</div>
+                                    <div class="flex-grow-1"></div>
+
+                                    <div class="d-inline-flex align-items-center me-2">
+                                        <span class="material-icons pe-1" id="likeButton"  style="font-size: 24px;"><a
+                                                href="#" class="text-reset">favorite</a></span>
+                                        <div>Likes: {{  post.shared_post.num_of_likes }}</div>
+                                    </div>
+                                    <div class="d-inline-flex align-items-center">
+                                         <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
+                                                 href="" class="text-reset">share</a>
+                                         </span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endif %}
+                        {% if post.is_image %}
+                            <div class="card mb-3 border-start-0" style="width: 100%;">
+                                <div class="row g-0 align-items-center">
+                                    <div class="col-md-3">
+                                        <a href="{% url "post" user_id=id post_id=post.id%}">
+                                            <img class="img-fluid rounded-start" style="width: 100%;" src="{{ post.image.url }}" alt="post image">
+                                        </a>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <div class="card-text">
+                                                {{ post.text_content }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer align-items-center d-flex">
+                                    <div class="d-inline-flex">@{{ username }}</div>
+                                    <div class="flex-grow-1"></div>
+
+                                    <div class="d-inline-flex align-items-center me-2">
+                                        <span class="material-icons pe-1" id="likeButton"  style="font-size: 24px;"><a
+                                                href="#" class="text-reset">favorite</a></span>
+                                        <div>Likes: {{ post.num_of_likes }}</div>
+                                    </div>
+                                    <div class="d-inline-flex align-items-center">
+                                         <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
+                                                 href="" class="text-reset">share</a>
+                                         </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="card mb-3" style="width: 100%;">
+                                <div class="row g-0 align-items-center">
+                                    <div class="col-md-12">
+                                        <div class="card-body">
+                                            <div class="card-text">
+                                                {{ post.text_content }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer align-items-center d-flex">
+                                    <div class="d-inline-flex">@{{ username }}</div>
+                                    <div class="flex-grow-1"></div>
+
+                                    <div class="d-inline-flex align-items-center me-2">
+                                        <span class="material-icons pe-1" id="likeButton"  style="font-size: 24px;"><a
+                                                href="#" class="text-reset">favorite</a></span>
+                                        <div>Likes: {{ post.num_of_likes }}</div>
+                                    </div>
+                                    <div class="d-inline-flex align-items-center">
+                                         <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
+                                                 href="" class="text-reset">share</a>
+                                         </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
         {% endif %}
     </div>
-
 
     <script type="text/javascript">
 
@@ -224,6 +348,20 @@
             declineFriendRequest(friend_request_id, onFriendRequestDeclined)
         }
 
+        function OnLikeOrDislike(){
+            location.reload();
+        }
+        // Use onclick on each button and link to JS function instead
+        {#let likePostBtn = document.querySelectorAll("#likeButton");#}
+        {#if (likePostBtn.length > 0)#}
+        {#{#}
+        {#    likePostBtn.forEach((btn) => {#}
+        {#        btn.addEventListener("click", function (){#}
+        {#            likePostRequest("{{ post.id }}", OnLikeOrDislike)#}
+        {#        })#}
+        {#    });#}
+
+
     </script>
 
     {% include 'SocialSite/Friend/send_friend_request.html' %}
@@ -231,6 +369,9 @@
     {% include 'SocialSite/Friend/remove_friend.html' %}
     {% include 'SocialSite/Friend/decline_friend_request.html' %}
     {% include 'SocialSite/Friend/cancel_friend_request.html' %}
+    {% include 'SocialSite/Account/account_posts_js.html' %}
+    {% include 'SocialSite/Account/account_like_post_request.html' %}
+
 
 
 {% endblock content %}

@@ -153,6 +153,7 @@ class FriendRequest(models.Model):
 
 
 class Post(models.Model):
+    poster = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='post_poster', null=True, blank=True)
     num_of_likes = models.IntegerField(default='0')
     text_content = models.TextField(blank=True, null=True)
     image = models.ImageField(null=True, blank=True, upload_to=get_profile_image_directory, default=get_default_post_image)
@@ -161,6 +162,7 @@ class Post(models.Model):
     is_shared_post = models.BooleanField(default=False)
     shared_post = models.OneToOneField('Post', blank=True, null=True, on_delete=models.CASCADE)
     usersWhoLiked = models.ManyToManyField('Account', blank=True, related_name='users_who_liked')
+    usersWhoShared = models.ManyToManyField('Account', blank=True, related_name='users_who_shared')
 
     def like_post(self, account: Account):
         if account not in self.usersWhoLiked.all():
@@ -177,6 +179,18 @@ class Post(models.Model):
         self.save()
 
         return self.num_of_likes
+
+    def share_post(self, account: Account):
+        account_post_list = PostList.objects.get(user=account)
+        if account_post_list:
+            new_post = Post()
+            new_post.is_shared_post = True
+            new_post.shared_post = self
+            self.usersWhoShared.add(account)
+            new_post.save()
+            self.save()
+            account_post_list.add_post(new_post)
+
 
     def __str__(self):
         return "PostId: " + str(self.id) + " PostedBy: " + str(self.userId)

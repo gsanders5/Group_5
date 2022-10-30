@@ -7,16 +7,22 @@
             <div class="col-sm-4">
                 <div class="card profile-card m-2">
                     <div class="card-header d-flex">
-                        <div class="row align-items-center">
-                            <div class="col pe-0">
+                        <div class="row align-items-center flex-grow-1">
+                            <div class="col-sm-1 pe-0">
                                 <a class="text-reset" href="{% url 'view' user_id=account_id %}">
-                                    <img class="account-image rounded-circle m-auto d-block" id="id_profile_links" src="{{ request.user.profile_image.url }}" alt="default profile image" width="40" height="40">
+                                    <img class="account-image rounded-circle m-auto d-block" id="id_profile_links" src="{{ profile_image }}" alt="default profile image" width="40" height="40">
                                 </a>
                             </div>
-                            <div class="col">
-                                <a class="text-reset" href="{% url 'view' user_id=account_id %}">
-                                    <div class="fw-light fs-5 ">@{{ username }}</div>
-                                </a>
+                            <div class="col-sm-11 d-flex flex-nowrap">
+                                {% if is_shared %}
+                                    {#                                    <a class="text-reset" href="{% url 'view' user_id=account_id %}">#}
+                                    <div class="fw-light fs-6 ">@{{ username }} sharing @{{ shared_post.poster.username }}'s post</div>
+                                    {#                                    </a>#}
+                                {% else %}
+                                    <a class="text-reset" href="{% url 'view' user_id=account_id %}">
+                                        <div class="fw-light fs-5 ">@{{ username }}</div>
+                                    </a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -54,16 +60,60 @@
                                 </div>
 
                             {% endif %}
-                            {% if not post_has_image %}
-                                <div class="flex-row">
-
+                            {% if not post_has_image and not is_shared %}
+                                <div class="flex-row mb-3">
                                     <p class="overflow-auto card-text">
                                         <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">
                                             {{ username }}
                                         </a></strong>: {{text_content}}
                                     </p>
                                 </div>
+                                <div class="fs-6 fw-light flex-row align-items-center d-flex">
 
+                                    <div class="d-inline-flex align-items-center mb-2">
+                                        <span class="material-icons pe-1" id="likeButton"  style="font-size: 18px;"><a
+                                                href="#" class="text-reset">favorite</a></span>
+                                        Likes: {{ num_of_likes }}
+                                    </div>
+                                    <div class="flex-grow-1"></div>
+                                    <div class="d-inline-flex align-items-center mb-2">
+                                         <span class="material-icons pe-1" id="shareButton"  style="font-size: 18px;"><a
+                                                 href="" class="text-reset">share</a>
+                                         </span>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if is_shared %}
+                                {% if shared_post.is_image %}
+                                    <div class="flex-row">
+                                        <div class="p-3 pt-0">
+                                            <img class="d-block border border-dark img-fluid mx-auto " alt="post image" id="id_profile_image" src="{{shared_post.image.url}}">
+                                        </div>
+                                    </div>
+                                    <div class="fs-6 fw-light flex-row align-items-center d-flex">
+
+                                        <div class="d-inline-flex align-items-center mb-2">
+                                        <span class="material-icons pe-1" id="likeButton"  style="font-size: 18px;"><a
+                                                href="#" class="text-reset">favorite</a></span>
+                                            Likes: {{ num_of_likes }}
+                                        </div>
+                                        <div class="flex-grow-1"></div>
+                                        <div class="d-inline-flex align-items-center mb-2">
+                                         <span class="material-icons pe-1" id="shareButton"  style="font-size: 18px;"><a
+                                                 href="" class="text-reset">share</a>
+                                         </span>
+                                        </div>
+                                    </div>
+                                    {#                                comments go here#}
+                                    <div class="flex-row">
+
+                                        <p class="overflow-auto card-text">
+                                            <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">
+                                                {{ username }}
+                                            </a></strong>: {{text_content}}
+                                        </p>
+                                    </div>
+                                {% endif %}
                             {% endif %}
                             <div class="d-flex flex-row justify-content-end mt-3">
                                 <div class="fs-6 fw-light text-muted">{{ created_at }}</div>
@@ -79,7 +129,7 @@
 
 
 
-    {% include 'SocialSite/Post/like_post_request.html' %}
+    {% include 'SocialSite/Post/post_requests.html' %}
     {% include 'SocialSite/Post/post_js.html' %}
 
 

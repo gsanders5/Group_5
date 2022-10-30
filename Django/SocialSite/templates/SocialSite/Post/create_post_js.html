@@ -7,6 +7,10 @@
     var cropY;
     var cropWidth;
     var cropHeight;
+    var postImageContainer;
+    var imageCheckbox;
+    var contextTextArea;
+    var saveButton = document.getElementById("saveButton");
 
     enableImageOverlay()
 
@@ -14,17 +18,21 @@
         var postImageContainer = document.getElementById("postImageContainer");
         var imageCheckbox = document.getElementById("imageSwitch");
         var contentTextArea = document.getElementById("contentTextArea");
-        if (imageCheckbox.checked){
+
+        if (imageCheckbox.checked) {
             postImageContainer.classList.remove("d-none")
             contentTextArea.innerHTML="Description";
-
+            postImageContainer.classList.remove("d-none")
+            saveButton.classList.add("d-none")
         }
         else {
-            if (!postImageContainer.classList.contains("d-none"))
-            {
+            if (!postImageContainer.classList.contains("d-none")) {
                 postImageContainer.classList.add("d-none")
                 contentTextArea.innerHTML="Content";
-
+            }
+            if (saveButton.classList.contains("d-none"))
+            {
+                saveButton.classList.remove("d-none")
             }
         }
     }
@@ -124,6 +132,7 @@
                 cropWidth,
                 cropHeight
             )
+            saveButton.classList.remove("d-none")
         })
 
         var cancel = document.getElementById("id_cancel")

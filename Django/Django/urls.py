@@ -42,6 +42,9 @@ from SocialSite.views import (
     post_view,
     like_post,
     unlike_post,
+    home_view,
+    share_post,
+    add_accounts_to_posts_job,
 )
 import debug_toolbar
 
@@ -50,7 +53,7 @@ admin.site.site_header = 'SocialSite Admin'
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('__debug__', include(debug_toolbar.urls)),
-    path('', home_screen_view, name='home'),
+    path('', home_view, name='home'),
     path('account/<user_id>/', account_view, name='view'),
     path('account/<user_id>/edit/', edit_account_view, name='edit'),
     path('account/<user_id>/edit/cropProfileImage', crop_profile_image, name='crop-profile-image'),
@@ -67,10 +70,12 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('post/<user_id>/<post_id>/', post_view, name='post'),
     path('post/like_post/<post_id>', like_post, name='like-post'),
-    path('post/<user_id>/<post_id>/unlike_post/', unlike_post, name='unlike-post'),
+    path('post/share_post/<post_id>', share_post, name='share-post'),
+    path('post/unlike_post/<post_id>', unlike_post, name='unlike-post'),
     path('register/', register_view, name='register'),
     path('search/', account_search_view, name='search'),
     path('utils/create/', create_post_lists_job, name='create-list-post'),
+    path('utils/postAccount/', add_accounts_to_posts_job, name='create-list-post'),
 
 ]
 

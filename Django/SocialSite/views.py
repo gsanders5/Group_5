@@ -8,7 +8,7 @@ from django.core import files
 from .models import Account, FriendList, FriendRequest, PostList, Post, CommentList, Comment
 from .friend_request_status import FriendRequestStatus
 from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm, PostCreationForm
-from .utils import get_friend_request_or_false, create_post_list_jobs
+from .utils import get_friend_request_or_false, create_post_list_jobs, add_user_to_posts
 import os
 import cv2
 import base64
@@ -17,6 +17,7 @@ import json
 import random
 import io
 import string
+import types
 
 TEMP_PROFILE_IMAGE_NAME = "temp_profile_image.png"
 TEMP_POST_IMAGE_NAME = "tempPostImage.png"
@@ -82,6 +83,39 @@ def get_redirect_if_exists(request):
         if request.GET.get("next"):
             userRedirect = str(request.GET.get("next"))
     return userRedirect
+
+
+class friend_post_object(object):
+    pass
+
+def home_view(request, *args, **kwargs):
+    context = {}
+    user = request.user
+    if user.is_authenticated:
+        context['id'] = user.id
+        context['username'] = user.username
+        context['profile_image'] = user.profile_image.url
+        try:
+            friend_list = FriendList.objects.get(user=user)
+        except FriendList.DoesNotExist:
+            friend_list = FriendList(user=user)
+            friend_list.save()
+        friends = friend_list.friends.all()
+        context['friends'] = friends
+        all_posts = []
+        for friend in friends:
+            friend_post_list = PostList.objects.get(user=friend)
+            if friend_post_list:
+                friend_posts = friend_post_list.posts.all()
+                for post in friend_posts:
+                    friend_post_object = types.SimpleNamespace()
+                    friend_post_object.friend = friend
+                    friend_post_object.post = post
+
+                    all_posts.append(friend_post_object)
+        all_posts.sort(key=lambda x: x.post.created_at, reverse=True)
+        context['posts'] = all_posts
+        return render(request, 'SocialSite/home.html', context)
 
 
 def account_view(request, *args, **kwargs):
@@ -457,6 +491,14 @@ def create_post_lists_job(request):
     return HttpResponse("Success")
 
 
+def add_accounts_to_posts_job(request):
+    user = request.user
+    if user.is_authenticated:
+        add_user_to_posts(request)
+    return HttpResponse("Success")
+
+
+
 def save_temp_profile_image_from_base64String(imageString, user):
     INCORRECT_PADDING_EXCEPTION = "Incorrect padding"
     try:
@@ -543,12 +585,15 @@ def create_post_view(request, *args, **kwargs):
                 tempUrl = os.path.join(f"{settings.TEMP}/{request.user.id}", TEMP_POST_IMAGE_NAME)
                 new_post_name = ''.join(random.choices(string.ascii_uppercase + string.digits, k=9)) + ".png"
                 new_post.image.save(new_post_name, files.File(open(tempUrl, 'rb')))
+
             try:
                 postList = PostList.objects.get(user=request.user)
                 postList.add_post(new_post)
+
             except PostList.DoesNotExist:
                 return HttpResponse("Something went wrong")
-
+            new_post.poster = account
+            new_post.save()
             return redirect("view", user_id=account.pk)
         else:
             form = PostCreationForm(request.POST)
@@ -652,7 +697,9 @@ def post_view(request, *args, **kwargs):
             context['text_content'] = post.text_content
             context['created_at'] = post.created_at.date()
             context['num_of_likes'] = post.num_of_likes
-
+            context['is_shared'] = post.is_shared_post
+            if post.is_shared_post:
+                context['shared_post'] = post.shared_post
             # Get accounts friend list
             # If it doesn't exist, make one
             try:
@@ -710,23 +757,44 @@ def like_post(request, *args, **kwargs):
         else:
             payload['response'] = "Post_id not accessible."
     else:
-        payload['response'] = "You must be authenticated to cancel a friend request."
+        payload['response'] = "You must be authenticated to like a post."
     return HttpResponse(json.dumps(payload), content_type="application/json")
 
 
 def unlike_post(request, *args, **kwargs):
     payload = {}
     user = request.user
-    if request.method == "GET" and user.is_authenticated:
+    if request.method == "POST" and user.is_authenticated:
         post_id = request.POST.get("post_id")
         if post_id:
             post = Post.objects.get(pk=post_id)
             if post:
                 post.unlike_post(user)
+                payload['response'] = "Unliked Post."
+                payload['num_of_likes'] = post.num_of_likes
             else:
                 payload['response'] = "Something went wrong."
         else:
             payload['response'] = "Post_id not accessible."
     else:
-        payload['response'] = "You must be authenticated to cancel a friend request."
+        payload['response'] = "You must be authenticated to unlike a post."
+    return HttpResponse(json.dumps(payload), content_type="application/json")
+
+
+def share_post(request, *args, **kwargs):
+    payload = {}
+    user = request.user
+    if request.method == "POST" and user.is_authenticated:
+        post_id = request.POST.get("post_id")
+        if post_id:
+            post = Post.objects.get(pk=post_id)
+            if post:
+                post.share_post(user)
+                payload['response'] = "Shared Post."
+            else:
+                payload['response'] = "Something went wrong."
+        else:
+            payload['response'] = "Post_id not accessible."
+    else:
+        payload['response'] = "You must be authenticated to share a post."
     return HttpResponse(json.dumps(payload), content_type="application/json")
