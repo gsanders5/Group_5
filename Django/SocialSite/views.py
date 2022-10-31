@@ -116,6 +116,7 @@ def home_view(request, *args, **kwargs):
         all_posts.sort(key=lambda x: x.post.created_at, reverse=True)
         context['posts'] = all_posts
         return render(request, 'SocialSite/home.html', context)
+    return redirect('login')
 
 
 def account_view(request, *args, **kwargs):
