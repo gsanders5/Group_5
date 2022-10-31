@@ -202,93 +202,94 @@
                                 </div>
                             {% else %}
                                 <div class="card mb-3" style="width: 100%;">
-                                <div class="row g-0 align-items-center">
-                                    <div class="col-md-12">
-                                        <div class="card-body">
-                                            <div class="card-text">
-                                                {{ post.shared_post.text_content }}
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-md-12">
+                                            <div class="card-body">
+                                                <div class="card-text">
+                                                    {{ post.shared_post.text_content }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card-footer align-items-center d-flex">
-                                    <div class="d-inline-flex">@{{  post.shared_post.poster.username }}</div>
-                                    <div class="flex-grow-1"></div>
+                                    <div class="card-footer align-items-center d-flex">
+                                        <div class="d-inline-flex">@{{  post.shared_post.poster.username }}</div>
+                                        <div class="flex-grow-1"></div>
 
-                                    <div class="d-inline-flex align-items-center me-2">
+                                        <div class="d-inline-flex align-items-center me-2">
                                         <span class="material-icons pe-1" id="likeButton"  style="font-size: 24px;"><a
                                                 href="#" class="text-reset">favorite</a></span>
-                                        <div>Likes: {{  post.shared_post.num_of_likes }}</div>
-                                    </div>
-                                    <div class="d-inline-flex align-items-center">
+                                            <div>Likes: {{  post.shared_post.num_of_likes }}</div>
+                                        </div>
+                                        <div class="d-inline-flex align-items-center">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
                                                  href="" class="text-reset">share</a>
                                          </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             {% endif %}
-                        {% endif %}
-                        {% if post.is_image %}
-                            <div class="card mb-3 border-start-0" style="width: 100%;">
-                                <div class="row g-0 align-items-center">
-                                    <div class="col-md-3">
-                                        <a href="{% url "post" user_id=id post_id=post.id%}">
-                                            <img class="img-fluid rounded-start" style="width: 100%;" src="{{ post.image.url }}" alt="post image">
-                                        </a>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <div class="card-text">
-                                                {{ post.text_content }}
+                        {% else %}
+                            {% if post.is_image %}
+                                <div class="card mb-3 border-start-0" style="width: 100%;">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-md-3">
+                                            <a href="{% url "post" user_id=id post_id=post.id%}">
+                                                <img class="img-fluid rounded-start" style="width: 100%;" src="{{ post.image.url }}" alt="post image">
+                                            </a>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <div class="card-text">
+                                                    {{ post.text_content }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card-footer align-items-center d-flex">
-                                    <div class="d-inline-flex">@{{ username }}</div>
-                                    <div class="flex-grow-1"></div>
+                                    <div class="card-footer align-items-center d-flex">
+                                        <div class="d-inline-flex">@{{ username }}</div>
+                                        <div class="flex-grow-1"></div>
 
-                                    <div class="d-inline-flex align-items-center me-2">
+                                        <div class="d-inline-flex align-items-center me-2">
                                         <span class="material-icons pe-1" id="likeButton"  style="font-size: 24px;"><a
                                                 href="#" class="text-reset">favorite</a></span>
-                                        <div>Likes: {{ post.num_of_likes }}</div>
-                                    </div>
-                                    <div class="d-inline-flex align-items-center">
+                                            <div>Likes: {{ post.num_of_likes }}</div>
+                                        </div>
+                                        <div class="d-inline-flex align-items-center">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
                                                  href="" class="text-reset">share</a>
                                          </span>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                        {% if not post.is_image and not post.is_shared %}
-                            <div class="card mb-3" style="width: 100%;">
-                                <div class="row g-0 align-items-center">
-                                    <div class="col-md-12">
-                                        <div class="card-body">
-                                            <div class="card-text">
-                                                {{ post.text_content }}
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-footer align-items-center d-flex">
-                                    <div class="d-inline-flex">@{{ username }}</div>
-                                    <div class="flex-grow-1"></div>
+                            {% endif %}
+                            {% if not post.is_image %}
+                                <div class="card mb-3" style="width: 100%;">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-md-12">
+                                            <div class="card-body">
+                                                <div class="card-text">
+                                                    {{ post.text_content }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer align-items-center d-flex">
+                                        <div class="d-inline-flex">@{{ username }}</div>
+                                        <div class="flex-grow-1"></div>
 
-                                    <div class="d-inline-flex align-items-center me-2">
+                                        <div class="d-inline-flex align-items-center me-2">
                                         <span class="material-icons pe-1" id="likeButton"  style="font-size: 24px;"><a
                                                 href="#" class="text-reset">favorite</a></span>
-                                        <div>Likes: {{ post.num_of_likes }}</div>
-                                    </div>
-                                    <div class="d-inline-flex align-items-center">
+                                            <div>Likes: {{ post.num_of_likes }}</div>
+                                        </div>
+                                        <div class="d-inline-flex align-items-center">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
                                                  href="" class="text-reset">share</a>
                                          </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 </div>
