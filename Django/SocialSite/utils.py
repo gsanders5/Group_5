@@ -1,4 +1,4 @@
-from .models import FriendRequest, Account, PostList
+from .models import FriendRequest, Account, PostList, Post
 from django.http import HttpResponse
 
 
@@ -19,4 +19,21 @@ def create_post_list_jobs(request):
             new_post_list.save()
     return True
 
+
+
+def add_user_to_posts(request):
+    allPosts = Post.objects.all()
+    allPostLists = PostList.objects.all()
+    for post in allPosts:
+        for postList in allPostLists:
+            try:
+                userPost = postList.posts.get(id=post.id)
+                if userPost:
+                    userPost.poster = postList.user
+                    userPost.save()
+                    break
+                else:
+                    continue
+            except Post.DoesNotExist:
+                continue;
 

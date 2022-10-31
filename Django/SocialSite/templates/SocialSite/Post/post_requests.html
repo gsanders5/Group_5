@@ -1,0 +1,55 @@
+<script type="text/javascript">
+
+    function likePostRequest(post_id, uiUpdateFunction) {
+         payload = {
+             "csrfmiddlewaretoken": "{{ csrf_token }}",
+             "post_id": post_id,
+        }
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "{% url 'like-post' post_id=post_id %}",
+            timeout: 5000,
+            data: payload,
+            success: function (data) {
+                if (data.response == "Liked Post.") {
+
+                } else if (data.response != null) {
+                    alert(data.response);
+                }
+            },
+            error: function (data){
+                alert("Something went wrong: " + data);
+            },
+            complete: function (data){
+                uiUpdateFunction();
+            }
+        })
+    };
+    function sharePostRequest(post_id, uiUpdateFunction) {
+         payload = {
+             "csrfmiddlewaretoken": "{{ csrf_token }}",
+             "post_id": post_id,
+        }
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "{% url 'share-post' post_id=post_id %}",
+            timeout: 5000,
+            data: payload,
+            success: function (data) {
+                if (data.response == "Shared Post.") {
+
+                } else if (data.response != null) {
+                    alert(data.response);
+                }
+            },
+            error: function (data){
+                alert("Something went wrong: " + data);
+            },
+            complete: function (data){
+                uiUpdateFunction();
+            }
+        })
+    }
+</script>

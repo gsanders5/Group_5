@@ -36,7 +36,15 @@ from SocialSite.views import (
     remove_friend,
     friend_requests_view,
     create_post_lists_job,
-    crop_image,
+    crop_profile_image,
+    create_post_view,
+    crop_post_image,
+    post_view,
+    like_post,
+    unlike_post,
+    home_view,
+    share_post,
+    add_accounts_to_posts_job,
 )
 import debug_toolbar
 
@@ -45,12 +53,12 @@ admin.site.site_header = 'SocialSite Admin'
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('__debug__', include(debug_toolbar.urls)),
-    path('', home_screen_view, name='home'),
+    path('', home_view, name='home'),
     path('account/<user_id>/', account_view, name='view'),
     path('account/<user_id>/edit/', edit_account_view, name='edit'),
-    path('account/<user_id>/edit/cropImage', crop_image, name='crop-image'),
-    path('login/', login_view, name='login'),
-    path('logout/', logout_view, name='logout'),
+    path('account/<user_id>/edit/cropProfileImage', crop_profile_image, name='crop-profile-image'),
+    path('account/<user_id>/edit/cropPostImage', crop_post_image, name='crop-post-image'),
+    path('create/', create_post_view, name='create-post'),
     path('friend/accept_friend_request/<friend_request_id>/', accept_friend_request, name="friend-request-accept"),
     path('friend/cancel_friend_request/', cancel_friend_request, name="friend-request-cancel"),
     path('friend/decline_friend_request/', decline_friend_request, name="friend-request-decline"),
@@ -58,9 +66,16 @@ urlpatterns = [
     path('friend/friend_remove/', remove_friend, name="remove-friend"),
     path('friend/friend_request/', send_friend_request, name="friend-request"),
     path('friend/friend_request/<user_id>/', friend_requests_view, name="friend-requests"),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+    path('post/<user_id>/<post_id>/', post_view, name='post'),
+    path('post/like_post/<post_id>', like_post, name='like-post'),
+    path('post/share_post/<post_id>', share_post, name='share-post'),
+    path('post/unlike_post/<post_id>', unlike_post, name='unlike-post'),
     path('register/', register_view, name='register'),
     path('search/', account_search_view, name='search'),
     path('utils/create/', create_post_lists_job, name='create-list-post'),
+    path('utils/postAccount/', add_accounts_to_posts_job, name='create-list-post'),
 
 ]
 
