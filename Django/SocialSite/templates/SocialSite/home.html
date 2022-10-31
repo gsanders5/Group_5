@@ -47,11 +47,14 @@
                         <div class="card mb-3" style="width: 100%;">
                             <div class="row g-0 align-items-center">
                                 <div class="col-md-12">
-                                    <div class="card-body">
-                                        <div class="card-text">
-                                            {{ obj.post.text_content }}
+                                    <a class="text-reset" href="{% url 'post' user_id=obj.friend.id post_id=obj.post.id %}">
+
+                                        <div class="card-body">
+                                            <div class="card-text">
+                                                {{ obj.post.text_content }}
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                             <div class="card-footer align-items-center d-flex">
