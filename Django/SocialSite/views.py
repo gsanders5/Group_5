@@ -88,6 +88,7 @@ def get_redirect_if_exists(request):
 class friend_post_object(object):
     pass
 
+
 def home_view(request, *args, **kwargs):
     context = {}
     user = request.user
@@ -269,17 +270,17 @@ def edit_account_view(request, *args, **kwargs):
             context['form'] = form
     else:
         form = AccountUpdateForm(
-                                 initial={
-                                     "id": account.pk,
-                                     "email": account.email,
-                                     "username": account.username,
-                                     "first_name": account.first_name,
-                                     "last_name": account.last_name,
-                                     "hide_email": account.hide_email,
-                                     "profile_image": account.profile_image,
-                                     "bio": account.bio,
-                                 }
-                                 )
+            initial={
+                "id": account.pk,
+                "email": account.email,
+                "username": account.username,
+                "first_name": account.first_name,
+                "last_name": account.last_name,
+                "hide_email": account.hide_email,
+                "profile_image": account.profile_image,
+                "bio": account.bio,
+            }
+        )
         context['form'] = form
     context['DATA_UPLOAD_MAX_MEMORY_SIZE'] = settings.DATA_UPLOAD_MAX_MEMORY_SIZE
     return render(request, "SocialSite/Account/edit_account.html", context)
