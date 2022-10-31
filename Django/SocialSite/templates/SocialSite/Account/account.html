@@ -165,7 +165,6 @@
                 </div>
             {% endif %}
             <div class="d-flex justify-content-center mt-3">
-            {{ num_of_posts }}
                 <div class="col-6">
                     {% for post in posts %}
                         {% if post.is_shared_post %}
@@ -262,7 +261,8 @@
                                     </div>
                                 </div>
                             </div>
-                        {% else %}
+                        {% endif %}
+                        {% if not post.is_image and not post.is_shared %}
                             <div class="card mb-3" style="width: 100%;">
                                 <div class="row g-0 align-items-center">
                                     <div class="col-md-12">
