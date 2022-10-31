@@ -9,9 +9,9 @@
                     {% if obj.post.is_image %}
                         <div class="card mb-3 border-start-0" style="width: 100%;">
                             <div class="row g-0 align-items-center">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <a href="{% url "post" user_id=obj.friend.id post_id=obj.post.id%}">
-                                        <img class="img-fluid rounded-start" style="width: 75%;" src="{{ obj.post.image.url }}" alt="post image">
+                                        <img class="img-fluid rounded-start" style="width: 100%;" src="{{ obj.post.image.url }}" alt="post image">
                                     </a>
                                 </div>
                                 <div class="col-md-8">
