@@ -186,11 +186,11 @@ class Post(models.Model):
             new_post = Post()
             new_post.is_shared_post = True
             new_post.shared_post = self
+            new_post.poster = account
             self.usersWhoShared.add(account)
             new_post.save()
             self.save()
             account_post_list.add_post(new_post)
-
 
     def __str__(self):
         return "PostId: " + str(self.id) + " PostedBy: " + str(self.userId)
@@ -218,14 +218,22 @@ class PostList(models.Model):
 
 
 class Comment(models.Model):
-    user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='commenter')
-    content = models.TextField()
+    user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='commenter', blank=True, null=True)
+    text_content = models.TextField()
     createdAt = models.DateTimeField(auto_now_add=True)
 
 
 class CommentList(models.Model):
     post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name='postComment')
     comments = models.ManyToManyField('Comment', related_name='comments', blank=True)
+
+    def add_comment(self, comment: Comment):
+        if comment not in self.comments.all():
+            self.comments.add(comment)
+
+    def remove_comment(self, comment: Comment):
+        if comment in self.comments.all():
+            self.comments.remove(comment)
 
 
 

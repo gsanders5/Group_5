@@ -172,7 +172,7 @@
                                 <div class="card mb-3 border-start-0" style="width: 100%;">
                                     <div class="row g-0 align-items-center">
                                         <div class="col-md-3">
-                                            <a href="{% url "post" user_id=post.shared_post.poster.id post_id=post.shared_post.id%}">
+                                            <a href="{% url "post" user_id=id post_id=post.id%}">
                                                 <img class="img-fluid rounded-start" style="width: 100%;" src="{{ post.shared_post.image.url }}" alt="post image">
                                             </a>
                                         </div>
@@ -193,11 +193,13 @@
                                                 href="#" class="text-reset">favorite</a></span>
                                             <div>Likes: {{ post.shared_post.num_of_likes }}</div>
                                         </div>
-                                        <div class="d-inline-flex align-items-center">
+                                        {% if not is_self == True %}
+                                            <div class="d-inline-flex align-items-center">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
                                                  href="" class="text-reset">share</a>
                                          </span>
-                                        </div>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% else %}
@@ -220,11 +222,13 @@
                                                 href="#" class="text-reset">favorite</a></span>
                                             <div>Likes: {{  post.shared_post.num_of_likes }}</div>
                                         </div>
-                                        <div class="d-inline-flex align-items-center">
+                                        {% if not is_self == True %}
+                                            <div class="d-inline-flex align-items-center">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
                                                  href="" class="text-reset">share</a>
                                          </span>
-                                        </div>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endif %}
@@ -240,7 +244,9 @@
                                         <div class="col-md-8">
                                             <div class="card-body">
                                                 <div class="card-text">
-                                                    {{ post.text_content }}
+                                                    {% if post.text_content %}
+                                                        {{ post.text_content }}
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>
@@ -254,11 +260,14 @@
                                                 href="#" class="text-reset">favorite</a></span>
                                             <div>Likes: {{ post.num_of_likes }}</div>
                                         </div>
-                                        <div class="d-inline-flex align-items-center">
+                                        {% if not is_self == True %}
+
+                                            <div class="d-inline-flex align-items-center">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
                                                  href="" class="text-reset">share</a>
                                          </span>
-                                        </div>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endif %}
@@ -284,11 +293,14 @@
                                                 href="#" class="text-reset">favorite</a></span>
                                             <div>Likes: {{ post.num_of_likes }}</div>
                                         </div>
-                                        <div class="d-inline-flex align-items-center">
+                                        {% if not is_self == True %}
+
+                                            <div class="d-inline-flex align-items-center">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
                                                  href="" class="text-reset">share</a>
                                          </span>
-                                        </div>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endif %}

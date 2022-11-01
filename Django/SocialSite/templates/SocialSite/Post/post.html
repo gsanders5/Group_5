@@ -20,7 +20,7 @@
                                     {#                                    </a>#}
                                 {% else %}
                                     <a class="text-reset" href="{% url 'view' user_id=account_id %}">
-                                        <div class="fw-light fs-5 ">@{{ username }}</div>
+                                        <div class="fw-light fs-6 ">@{{ username }}</div>
                                     </a>
                                 {% endif %}
                             </div>
@@ -43,22 +43,35 @@
                                         Likes: {{ num_of_likes }}
                                     </div>
                                     <div class="flex-grow-1"></div>
-                                    <div class="d-inline-flex align-items-center mb-2">
+                                    {% if not is_self == True %}
+
+                                        <div class="d-inline-flex align-items-center mb-2">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 18px;"><a
                                                  href="" class="text-reset">share</a>
                                          </span>
-                                    </div>
+                                        </div>
+                                    {% endif %}
                                 </div>
                                 {#                                comments go here#}
                                 <div class="flex-row">
-
                                     <p class="overflow-auto card-text">
                                         <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">
                                             {{ username }}
                                         </a></strong>: {{text_content}}
                                     </p>
                                 </div>
-
+{#                                {% for comment in comments %}#}
+{#                                    {% if comment.text_content %}#}
+{##}
+{#                                        <div class="flex-row">#}
+{#                                            <p class="overflow-auto card-text">#}
+{#                                                <strong><a class="text-reset" href="{% url 'view' user_id=comment.user.id %}">#}
+{#                                                    {{ comment.user.username }}#}
+{#                                                </a></strong>: {{comment.text_content}}#}
+{#                                            </p>#}
+{#                                        </div>#}
+{#                                    {% endif %}#}
+{#                                {% endfor %}#}
                             {% endif %}
                             {% if not post_has_image and not is_shared %}
                                 <div class="flex-row mb-3">
@@ -76,43 +89,65 @@
                                         Likes: {{ num_of_likes }}
                                     </div>
                                     <div class="flex-grow-1"></div>
-                                    <div class="d-inline-flex align-items-center mb-2">
+                                    {% if not is_self == True %}
+                                        <div class="d-inline-flex align-items-center mb-2">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 18px;"><a
                                                  href="" class="text-reset">share</a>
                                          </span>
-                                    </div>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             {% endif %}
                             {% if is_shared %}
                                 {% if shared_post.is_image %}
                                     <div class="flex-row">
-                                        <div class="p-3 pt-0">
-                                            <img class="d-block border border-dark img-fluid mx-auto " alt="post image" id="id_profile_image" src="{{shared_post.image.url}}">
-                                        </div>
+                                        <a href="{% url "post" user_id=shared_post.poster.id post_id=shared_post.id%}">
+                                            <div class="p-3 pt-0">
+                                                <img class="d-block border border-dark img-fluid mx-auto " alt="post image" id="id_profile_image" src="{{shared_post.image.url}}">
+                                            </div>
+                                        </a>
                                     </div>
                                     <div class="fs-6 fw-light flex-row align-items-center d-flex">
-
                                         <div class="d-inline-flex align-items-center mb-2">
                                         <span class="material-icons pe-1" id="likeButton"  style="font-size: 18px;"><a
                                                 href="#" class="text-reset">favorite</a></span>
                                             Likes: {{ num_of_likes }}
                                         </div>
                                         <div class="flex-grow-1"></div>
-                                        <div class="d-inline-flex align-items-center mb-2">
+                                        {% if not is_self == True %}
+                                            <div class="d-inline-flex align-items-center mb-2">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 18px;"><a
                                                  href="" class="text-reset">share</a>
                                          </span>
-                                        </div>
+                                            </div>
+                                        {% endif %}
                                     </div>
-                                    {#                                comments go here#}
-                                    <div class="flex-row">
+                                    {% if text_content %}
 
-                                        <p class="overflow-auto card-text">
-                                            <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">
-                                                {{ username }}
-                                            </a></strong>: {{text_content}}
-                                        </p>
-                                    </div>
+                                        <div class="flex-row">
+                                            <p class="overflow-auto card-text">
+                                                <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">
+                                                    {{ username }}
+                                                </a></strong>: {{text_content}}
+                                            </p>
+                                        </div>
+                                    {% endif %}
+
+{#                                    {% for comment in comments %}#}
+{#                                        {% if comment.text_content %}#}
+{##}
+{#                                            <div class="flex-row">#}
+{##}
+{#                                                <p class="overflow-auto card-text">#}
+{#                                                    <strong><a class="text-reset" href="{% url 'view' user_id=comment.user.id %}">#}
+{#                                                        {{ comment.user.username }}#}
+{#                                                    </a></strong>: {{comment.text_content}}#}
+{#                                                </p>#}
+{#                                            </div>#}
+{#                                        {% endif %}#}
+{#                                    {% endfor %}#}
+                                {% else %}
+
                                 {% endif %}
                             {% endif %}
                             <div class="d-flex flex-row justify-content-end mt-3">
