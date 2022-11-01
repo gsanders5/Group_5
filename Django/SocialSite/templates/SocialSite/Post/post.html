@@ -53,32 +53,31 @@
                                     {% endif %}
                                 </div>
                                 {#                                comments go here#}
-                                <div class="flex-row">
-                                    <p class="overflow-auto card-text">
-                                        <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">
-                                            {{ username }}
-                                        </a></strong>: {{text_content}}
-                                    </p>
-                                </div>
-{#                                {% for comment in comments %}#}
-{#                                    {% if comment.text_content %}#}
-{##}
-{#                                        <div class="flex-row">#}
-{#                                            <p class="overflow-auto card-text">#}
-{#                                                <strong><a class="text-reset" href="{% url 'view' user_id=comment.user.id %}">#}
-{#                                                    {{ comment.user.username }}#}
-{#                                                </a></strong>: {{comment.text_content}}#}
-{#                                            </p>#}
-{#                                        </div>#}
-{#                                    {% endif %}#}
-{#                                {% endfor %}#}
+                                {% if text_content %}
+
+                                    <div class="flex-row">
+                                        <p class="overflow-auto card-text">
+                                            <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">{{ username }}</a></strong>: {{text_content}}
+                                        </p>
+                                    </div>
+                                {% endif %}
+                                {#                                {% for comment in comments %}#}
+                                {#                                    {% if comment.text_content %}#}
+                                {##}
+                                {#                                        <div class="flex-row">#}
+                                {#                                            <p class="overflow-auto card-text">#}
+                                {#                                                <strong><a class="text-reset" href="{% url 'view' user_id=comment.user.id %}">#}
+                                {#                                                    {{ comment.user.username }}#}
+                                {#                                                </a></strong>: {{comment.text_content}}#}
+                                {#                                            </p>#}
+                                {#                                        </div>#}
+                                {#                                    {% endif %}#}
+                                {#                                {% endfor %}#}
                             {% endif %}
                             {% if not post_has_image and not is_shared %}
                                 <div class="flex-row mb-3">
                                     <p class="overflow-auto card-text">
-                                        <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">
-                                            {{ username }}
-                                        </a></strong>: {{text_content}}
+                                        <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">{{ username }}</a></strong>: {{text_content}}
                                     </p>
                                 </div>
                                 <div class="fs-6 fw-light flex-row align-items-center d-flex">
@@ -126,26 +125,24 @@
 
                                         <div class="flex-row">
                                             <p class="overflow-auto card-text">
-                                                <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">
-                                                    {{ username }}
-                                                </a></strong>: {{text_content}}
+                                                <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">{{ username }}</a></strong>: {{text_content}}
                                             </p>
                                         </div>
                                     {% endif %}
 
-{#                                    {% for comment in comments %}#}
-{#                                        {% if comment.text_content %}#}
-{##}
-{#                                            <div class="flex-row">#}
-{##}
-{#                                                <p class="overflow-auto card-text">#}
-{#                                                    <strong><a class="text-reset" href="{% url 'view' user_id=comment.user.id %}">#}
-{#                                                        {{ comment.user.username }}#}
-{#                                                    </a></strong>: {{comment.text_content}}#}
-{#                                                </p>#}
-{#                                            </div>#}
-{#                                        {% endif %}#}
-{#                                    {% endfor %}#}
+                                    {#                                    {% for comment in comments %}#}
+                                    {#                                        {% if comment.text_content %}#}
+                                    {##}
+                                    {#                                            <div class="flex-row">#}
+                                    {##}
+                                    {#                                                <p class="overflow-auto card-text">#}
+                                    {#                                                    <strong><a class="text-reset" href="{% url 'view' user_id=comment.user.id %}">#}
+                                    {#                                                        {{ comment.user.username }}#}
+                                    {#                                                    </a></strong>: {{comment.text_content}}#}
+                                    {#                                                </p>#}
+                                    {#                                            </div>#}
+                                    {#                                        {% endif %}#}
+                                    {#                                    {% endfor %}#}
                                 {% else %}
 
                                 {% endif %}
