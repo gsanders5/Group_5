@@ -7,7 +7,7 @@ from django.core.files.storage import FileSystemStorage
 from django.core import files
 from .models import Account, FriendList, FriendRequest, PostList, Post, CommentList, Comment
 from .friend_request_status import FriendRequestStatus
-from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm, PostCreationForm
+from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm, PostCreationForm, CommentCreationForm
 from .utils import get_friend_request_or_false, create_post_list_jobs, add_user_to_posts
 import os
 import cv2
@@ -101,18 +101,34 @@ def home_view(request, *args, **kwargs):
         except FriendList.DoesNotExist:
             friend_list = FriendList(user=user)
             friend_list.save()
+
         friends = friend_list.friends.all()
         context['friends'] = friends
         all_posts = []
+        try:
+            user_post_list = PostList.objects.get(user=user)
+        except PostList.DoesNotExist:
+            user_post_list = PostList(user=user)
+            user_post_list.save()
+        if user_post_list:
+            user_posts = user_post_list.posts.all()
+            for post in user_posts:
+                user_post_object = types.SimpleNamespace()
+                user_post_object.friend = user
+                user_post_object.post = post
+                all_posts.append(user_post_object)
         for friend in friends:
-            friend_post_list = PostList.objects.get(user=friend)
+            try:
+                friend_post_list = PostList.objects.get(user=friend)
+            except PostList.DoesNotExist:
+                friend_post_list = PostList(user=friend)
+                friend_post_list.save()
             if friend_post_list:
                 friend_posts = friend_post_list.posts.all()
                 for post in friend_posts:
                     friend_post_object = types.SimpleNamespace()
                     friend_post_object.friend = friend
                     friend_post_object.post = post
-
                     all_posts.append(friend_post_object)
         all_posts.sort(key=lambda x: x.post.created_at, reverse=True)
         context['posts'] = all_posts
@@ -716,6 +732,8 @@ def post_view(request, *args, **kwargs):
             except CommentList.DoesNotExist:
                 comment_list = CommentList(post=post)
                 comment_list.save()
+            all_comments = comment_list.comments.all()
+            context['comments'] = all_comments
 
             # Set initial variables
             is_self = True
@@ -800,3 +818,45 @@ def share_post(request, *args, **kwargs):
     else:
         payload['response'] = "You must be authenticated to share a post."
     return HttpResponse(json.dumps(payload), content_type="application/json")
+
+
+def make_comment_view(request, *args, **kwargs):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    user_id = request.user.id
+    try:
+        account = Account.objects.get(pk=user_id)
+    except Account.DoesNotExist:
+        return HttpResponse("Something went wrong.")
+    context = {}
+    if request.POST:
+        post_id = kwargs.get("post_id")
+        form = CommentCreationForm(request.POST)
+        if form.is_valid():
+            new_comment = form.save()
+            try:
+                post = Post.objects.get(pk=post_id)
+            except Post.DoesNotExist:
+                return HttpResponse("Post does not exist.")
+            try:
+                comment_list = CommentList.objects.get(post=post)
+            except CommentList.DoesNotExist:
+                comment_list = CommentList(post=post)
+                comment_list.save()
+
+            comment_list.add_comment(new_comment)
+            new_comment.user = account
+            new_comment.save()
+            return redirect("view", user_id=account.pk)
+        else:
+            form = CommentCreationForm(request.POST)
+            context['form'] = form
+    else:
+        context['form'] = CommentCreationForm()
+    return render(request, "SocialSite/Post/make_comment.html", context)
+
+
+def comments_view(request, *args, **kwargs):
+    # make comment view
+    # need to make view comment button on each post page
+    return

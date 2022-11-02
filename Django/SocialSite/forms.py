@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
-from .models import Account, Post, PostList
+from .models import Account, Post, PostList, Comment
 
 
 
@@ -93,5 +93,9 @@ class PostCreationForm(forms.ModelForm):
         fields = ('text_content', 'is_image')
 
 
+class CommentCreationForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text_content',)
 
 
