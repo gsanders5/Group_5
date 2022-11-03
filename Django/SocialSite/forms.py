@@ -99,3 +99,8 @@ class CommentCreationForm(forms.ModelForm):
         fields = ('text_content',)
 
 
+class PostUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('text_content',)
+
