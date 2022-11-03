@@ -46,6 +46,9 @@ from SocialSite.views import (
     share_post,
     add_accounts_to_posts_job,
     make_comment_view,
+    comments_view,
+    delete_post,
+    edit_post_view,
 )
 import debug_toolbar
 
@@ -70,10 +73,12 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('post/<user_id>/<post_id>/', post_view, name='post'),
-    path('post/like_post/<post_id>', like_post, name='like-post'),
-    path('post/share_post/<post_id>', share_post, name='share-post'),
-    path('post/unlike_post/<post_id>', unlike_post, name='unlike-post'),
     path('post/comment/<post_id>', make_comment_view, name='comment-post'),
+    path('post/comments/<post_id>', comments_view, name='comments-post'),
+    path('post/delete_post/<post_id>', delete_post, name='delete-post'),
+    path('post/edit_post/<post_id>', edit_post_view, name='edit-post'),
+    path('post/like_post/', like_post, name='like-post'),
+    path('post/share_post/<post_id>', share_post, name='share-post'),
     path('register/', register_view, name='register'),
     path('search/', account_search_view, name='search'),
     path('utils/create/', create_post_lists_job, name='create-list-post'),

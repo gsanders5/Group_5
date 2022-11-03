@@ -7,7 +7,7 @@ from django.core.files.storage import FileSystemStorage
 from django.core import files
 from .models import Account, FriendList, FriendRequest, PostList, Post, CommentList, Comment
 from .friend_request_status import FriendRequestStatus
-from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm, PostCreationForm, CommentCreationForm
+from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm, PostCreationForm, CommentCreationForm, PostUpdateForm
 from .utils import get_friend_request_or_false, create_post_list_jobs, add_user_to_posts
 import os
 import cv2
@@ -187,8 +187,10 @@ def account_view(request, *args, **kwargs):
                     post_list = PostList(user=Account)
                     post_list.save()
                 posts = post_list.posts.all()
+                post_list = list(posts)
+                post_list.sort(key=lambda x: x.created_at, reverse=True)
                 num_of_posts = posts.count()
-                context['posts'] = posts
+                context['posts'] = post_list
                 context['num_of_posts'] = num_of_posts
             # If user is not friends with account
             # Check for friend request
@@ -218,8 +220,10 @@ def account_view(request, *args, **kwargs):
                 post_list = PostList(user=Account)
                 post_list.save()
             posts = post_list.posts.all()
+            posts_list = list(posts)
+            posts_list.sort(key=lambda x: x.created_at, reverse=True)
             num_of_posts = posts.count()
-            context['posts'] = posts
+            context['posts'] = posts_list
             context['num_of_posts'] = num_of_posts
 
         # Give context necessary variables
@@ -622,12 +626,6 @@ def create_post_view(request, *args, **kwargs):
     return render(request, "SocialSite/Post/create_post.html", context)
 
 
-def delete_post(request, *args, **kwargs):
-    user = request.user
-    payload = {}
-    return HttpResponse(json.dumps(json.dumps(payload)), content_type="application/json")
-
-
 def save_temp_post_image_from_base64String(imageString, user):
     INCORRECT_PADDING_EXCEPTION = "Incorrect padding"
     try:
@@ -718,6 +716,14 @@ def post_view(request, *args, **kwargs):
             context['is_shared'] = post.is_shared_post
             if post.is_shared_post:
                 context['shared_post'] = post.shared_post
+            has_liked = False
+            try:
+                has_liked = post.usersWhoLiked.get(id=user.id)
+                if has_liked:
+                    context['has_liked'] = True
+            except:
+                context['has_liked'] = has_liked
+
             # Get accounts friend list
             # If it doesn't exist, make one
             try:
@@ -733,7 +739,9 @@ def post_view(request, *args, **kwargs):
                 comment_list = CommentList(post=post)
                 comment_list.save()
             all_comments = comment_list.comments.all()
-            context['comments'] = all_comments
+            comment_list = list(all_comments)
+            comment_list.sort(key=lambda x: x.createdAt, reverse=True)
+            context['comments'] = comment_list[0:3]
 
             # Set initial variables
             is_self = True
@@ -762,22 +770,69 @@ def post_view(request, *args, **kwargs):
 
 
 def like_post(request, *args, **kwargs):
-    payload = {}
     user = request.user
     if request.method == "POST" and user.is_authenticated:
         post_id = request.POST.get("post_id")
         if post_id:
             post = Post.objects.get(pk=post_id)
             if post:
-                post.like_post(user)
-                payload['response'] = "Liked Post."
-                payload['num_of_likes'] = post.num_of_likes
+                account = post.poster
+                if account:
+                    account_id = account.id
+                    try:
+                        has_liked = post.usersWhoLiked.get(id=user.id)
+                        post.unlike_post(account)
+                        return HttpResponse("Unlike Post.")
+                    except:
+                        post.like_post(account)
+                        return HttpResponse("Liked Post.")
             else:
-                payload['response'] = "Something went wrong."
+                return HttpResponse("Post doesn't exist.")
+        else:
+            return HttpResponse("Post doesn't exist.")
+    else:
+        return redirect("login")
+    return HttpResponse("Post doesn't exist.")
+
+
+def delete_post(request, *args, **kwargs):
+    payload = {}
+    user = request.user
+    if request.method == "GET" and user.is_authenticated:
+        post_id = kwargs.get("post_id")
+        if post_id:
+            try:
+                post = Post.objects.get(pk=post_id)
+            except Post.DoesNotExist:
+                return HttpResponse("Something went wrong")
+            try:
+                account = Account.objects.get(id=user.id)
+            except Account.DoesNotExist:
+                return HttpResponse("Something went wrong")
+            try:
+                post_list = PostList.objects.get(user=account)
+            except PostList.DoesNotExist:
+                return HttpResponse("Something went wrong")
+            has_post = post_list.posts.get(id=post_id)
+            if has_post:
+                if post:
+                    try:
+                        comment_list = CommentList.objects.get(post=post)
+                    except CommentList.DoesNotExist:
+                        return HttpResponse("Something went wrong")
+                    comments = comment_list.comments.all()
+                    for comment in comments:
+                        comment.delete()
+                    post.delete()
+                    payload['response'] = "Deleted Post."
+                    return redirect("view", user_id=user.id)
+
+                else:
+                    payload['response'] = "Something went wrong."
         else:
             payload['response'] = "Post_id not accessible."
     else:
-        payload['response'] = "You must be authenticated to like a post."
+        payload['response'] = "You must be authenticated to delete a post."
     return HttpResponse(json.dumps(payload), content_type="application/json")
 
 
@@ -847,7 +902,7 @@ def make_comment_view(request, *args, **kwargs):
             comment_list.add_comment(new_comment)
             new_comment.user = account
             new_comment.save()
-            return redirect("view", user_id=account.pk)
+            return redirect("post", user_id=post.poster.id, post_id=post_id)
         else:
             form = CommentCreationForm(request.POST)
             context['form'] = form
@@ -859,4 +914,66 @@ def make_comment_view(request, *args, **kwargs):
 def comments_view(request, *args, **kwargs):
     # make comment view
     # need to make view comment button on each post page
-    return
+    context = {}
+    user = request.user
+    post_id = kwargs.get("post_id")
+    if user.is_authenticated:
+        try:
+            post = Post.objects.get(id=post_id)
+        except Post.DoesNotExist:
+            return HttpResponse('Post does not exist.')
+        try:
+            post_comment_list = CommentList.objects.get(post=post)
+        except PostList.DoesNotExist:
+            post_comment_list = CommentList(post=post)
+            post_comment_list.save()
+        post_comments = post_comment_list.comments.all()
+        comment_list = list(post_comments)
+        comment_list.sort(key=lambda x: x.createdAt, reverse=True)
+        context['comments'] = comment_list
+        context['post_id'] = post_id
+        if post.poster:
+            context['poster_id'] = post.poster
+
+    return render(request, "SocialSite/Post/comments.html", context)
+
+
+def edit_post_view(request, *args, **kwargs):
+    user = request.user
+    context = {}
+
+    if not user.is_authenticated:
+        return redirect("login")
+    post_id = kwargs.get("post_id")
+    try:
+        post_list = PostList.objects.get(user=user)
+    except PostList.DoesNotExist:
+        return HttpResponse("User doesn't have a post list.")
+    try:
+        post = post_list.posts.get(id=post_id)
+    except:
+        return HttpResponse("That is not a post on your post list.")
+    if request.POST:
+        form = PostUpdateForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect("post", user_id=user.id, post_id=post.id)
+        else:
+            form = PostUpdateForm(request.POST, instance=post,
+                                  initial={
+                                      "post_image": post.image.url,
+                                      "text_content": post.text_content,
+
+                                  }
+                                  )
+            context['form'] = form
+    else:
+        form = PostUpdateForm(
+            initial={
+                "post_image": post.image.url,
+                "text_content": post.text_content,
+
+            }
+        )
+        context['form'] = form
+    return render(request, "SocialSite/Post/edit_post.html", context)

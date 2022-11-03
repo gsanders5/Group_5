@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="d-flex flex-row justify-content-center flex-wrap align-self-start">
+            <div class="col-sm-4">
+                <div class="card profile-card m-2">
+                    <div class="card-body m-0">
+                        <div class="flex-column">
+                            {% if comments %}
+                                {% for comment in comments %}
+                                    {% if comment.text_content %}
+                                        <div class="flex-row">
+                                            <p class="overflow-auto card-text">
+                                                <strong><a class="text-reset" href="{% url 'view' user_id=comment.user.id %}">
+                                                    {{ comment.user.username }}
+                                                </a></strong>: {{comment.text_content}}
+                                            </p>
+                                            <div class="d-flex flex-row justify-content-end mt-3">
+                                                <div class="fs-6 fw-light text-muted">{{ created_at }}</div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                            <div>
+                                This post has no comments
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    {% include 'SocialSite/Post/post_requests.html' %}
+
+
+
+{% endblock content %}

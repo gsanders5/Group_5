@@ -218,7 +218,7 @@ class PostList(models.Model):
 
 
 class Comment(models.Model):
-    user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='commenter', blank=True, null=True)
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="commenter", blank=True, null=True)
     text_content = models.TextField()
     createdAt = models.DateTimeField(auto_now_add=True)
 
@@ -234,6 +234,7 @@ class CommentList(models.Model):
     def remove_comment(self, comment: Comment):
         if comment in self.comments.all():
             self.comments.remove(comment)
+
 
 
 
