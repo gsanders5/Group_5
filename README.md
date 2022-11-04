@@ -13,7 +13,7 @@ different functionalities based on the customer (TA) expectations.
 ## Languages & Techniques:
 * Frontend: React, Bootstrap
 * Backend: Django
-
+* Coding Convention: PEP8
 ---
 ## Group Members
 * Graham Sanders @gsanders5
