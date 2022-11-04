@@ -22,7 +22,8 @@ import types
 TEMP_PROFILE_IMAGE_NAME = "temp_profile_image.png"
 TEMP_POST_IMAGE_NAME = "tempPostImage.png"
 
-
+# Outputs Register Page with Form (errors/no errors)
+# Logs in user after registration
 def register_view(request, *args, **kwargs):
     user = request.user
     if user.is_authenticated:
@@ -47,11 +48,13 @@ def register_view(request, *args, **kwargs):
     return render(request, 'SocialSite/register.html', context)
 
 
+# Logs out user redirects to Homepage
 def logout_view(request):
     logout(request)
     return redirect("home")
 
 
+# Login View with form validation and authentication
 def login_view(request, *args, **kwargs):
     context = {}
 
@@ -77,6 +80,7 @@ def login_view(request, *args, **kwargs):
     return render(request, "SocialSite/login.html", context)
 
 
+# Gets redirect
 def get_redirect_if_exists(request):
     userRedirect = None
     if request.GET:
@@ -85,10 +89,7 @@ def get_redirect_if_exists(request):
     return userRedirect
 
 
-class friend_post_object(object):
-    pass
-
-
+#Home page view with friends posts
 def home_view(request, *args, **kwargs):
     context = {}
     user = request.user
@@ -96,6 +97,7 @@ def home_view(request, *args, **kwargs):
         context['id'] = user.id
         context['username'] = user.username
         context['profile_image'] = user.profile_image.url
+        # Gets friends list
         try:
             friend_list = FriendList.objects.get(user=user)
         except FriendList.DoesNotExist:
@@ -105,6 +107,7 @@ def home_view(request, *args, **kwargs):
         friends = friend_list.friends.all()
         context['friends'] = friends
         all_posts = []
+        # Get all posts from friends and user post lists
         try:
             user_post_list = PostList.objects.get(user=user)
         except PostList.DoesNotExist:
@@ -136,6 +139,9 @@ def home_view(request, *args, **kwargs):
     return redirect('login')
 
 
+
+# Account page view
+# Manages friend requests
 def account_view(request, *args, **kwargs):
     context = {}
     user_id = kwargs.get("user_id")
@@ -235,6 +241,7 @@ def account_view(request, *args, **kwargs):
         return render(request, 'SocialSite/Account/account.html', context)
 
 
+# Account search view
 def account_search_view(request, *args, **kwargs):
     context = {}
 
@@ -257,6 +264,8 @@ def account_search_view(request, *args, **kwargs):
     return render(request, "SocialSite/Account/search_results.html", context)
 
 
+
+# Edit account page with form
 def edit_account_view(request, *args, **kwargs):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -306,6 +315,7 @@ def edit_account_view(request, *args, **kwargs):
     return render(request, "SocialSite/Account/edit_account.html", context)
 
 
+# Sends friend request
 def send_friend_request(request, *args, **kwargs):
     user = request.user
     payload = {}
@@ -338,6 +348,7 @@ def send_friend_request(request, *args, **kwargs):
     return HttpResponse(json.dumps(payload), content_type="application/json")
 
 
+# Shows all active friend requests
 def friend_requests_view(request, *args, **kwargs):
     context = {}
     user = request.user
@@ -354,6 +365,7 @@ def friend_requests_view(request, *args, **kwargs):
     return render(request, "SocialSite/Friend/friend_requests.html", context)
 
 
+# Accepts active friend request
 def accept_friend_request(request, *args, **kwargs):
     user = request.user
     payload = {}
@@ -376,6 +388,7 @@ def accept_friend_request(request, *args, **kwargs):
     return HttpResponse(json.dumps(payload), content_type="application/json")
 
 
+# Remove friend
 def remove_friend(request, *args, **kwargs):
     user = request.user
     payload = {}
@@ -396,6 +409,7 @@ def remove_friend(request, *args, **kwargs):
     return HttpResponse(json.dumps(payload), content_type="application/json")
 
 
+# Declines active friend request
 def decline_friend_request(request, *args, **kwargs):
     user = request.user
     payload = {}
@@ -418,6 +432,7 @@ def decline_friend_request(request, *args, **kwargs):
     return HttpResponse(json.dumps(payload), content_type="application/json")
 
 
+# Cancel sent friend request
 def cancel_friend_request(request, *args, **kwargs):
     user = request.user
     payload = {}
@@ -508,19 +523,20 @@ def account_posts_view(request, *args, **kwargs):
 # Create Post Lists for existing accounts
 def create_post_lists_job(request):
     user = request.user
-    if user.is_authenticated:
+    if user.is_authenticated and user.is_superuser:
         create_post_list_jobs(request)
     return HttpResponse("Success")
 
 
+# Adds poster to all previously made posts
 def add_accounts_to_posts_job(request):
     user = request.user
-    if user.is_authenticated:
+    if user.is_authenticated and user.is_superuser:
         add_user_to_posts(request)
     return HttpResponse("Success")
 
 
-
+# Saves temporary profile in order to crop image
 def save_temp_profile_image_from_base64String(imageString, user):
     INCORRECT_PADDING_EXCEPTION = "Incorrect padding"
     try:
@@ -542,6 +558,7 @@ def save_temp_profile_image_from_base64String(imageString, user):
     return None
 
 
+# Crops profile image and saves
 def crop_profile_image(request, *args, **kwargs):
     payload = {}
     user = request.user
@@ -585,6 +602,7 @@ def crop_profile_image(request, *args, **kwargs):
     return HttpResponse(json.dumps(payload), content_type="application/json")
 
 
+# Create posts view with form management
 def create_post_view(request, *args, **kwargs):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -626,6 +644,7 @@ def create_post_view(request, *args, **kwargs):
     return render(request, "SocialSite/Post/create_post.html", context)
 
 
+# Saves temp post image
 def save_temp_post_image_from_base64String(imageString, user):
     INCORRECT_PADDING_EXCEPTION = "Incorrect padding"
     try:
@@ -646,7 +665,7 @@ def save_temp_post_image_from_base64String(imageString, user):
             return save_temp_post_image_from_base64String(imageString, user)
     return None
 
-
+# Crops post image
 def crop_post_image(request, *args, **kwargs):
     payload = {}
     user = request.user
@@ -684,7 +703,7 @@ def crop_post_image(request, *args, **kwargs):
             payload['exception'] = str(e)
     return HttpResponse(json.dumps(payload), content_type="application/json")
 
-
+# Post view
 def post_view(request, *args, **kwargs):
     context = {}
     user = request.user
@@ -768,7 +787,7 @@ def post_view(request, *args, **kwargs):
 
     return render(request, "SocialSite/Post/post.html", context)
 
-
+# Likes post
 def like_post(request, *args, **kwargs):
     user = request.user
     if request.method == "POST" and user.is_authenticated:
@@ -794,7 +813,7 @@ def like_post(request, *args, **kwargs):
         return redirect("login")
     return HttpResponse("Post doesn't exist.")
 
-
+# deletes post
 def delete_post(request, *args, **kwargs):
     payload = {}
     user = request.user
@@ -835,7 +854,7 @@ def delete_post(request, *args, **kwargs):
         payload['response'] = "You must be authenticated to delete a post."
     return HttpResponse(json.dumps(payload), content_type="application/json")
 
-
+# unlikes post
 def unlike_post(request, *args, **kwargs):
     payload = {}
     user = request.user
@@ -856,6 +875,7 @@ def unlike_post(request, *args, **kwargs):
     return HttpResponse(json.dumps(payload), content_type="application/json")
 
 
+# Shares post
 def share_post(request, *args, **kwargs):
     payload = {}
     user = request.user
@@ -874,7 +894,7 @@ def share_post(request, *args, **kwargs):
         payload['response'] = "You must be authenticated to share a post."
     return HttpResponse(json.dumps(payload), content_type="application/json")
 
-
+# Make a comment view
 def make_comment_view(request, *args, **kwargs):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -910,7 +930,7 @@ def make_comment_view(request, *args, **kwargs):
         context['form'] = CommentCreationForm()
     return render(request, "SocialSite/Post/make_comment.html", context)
 
-
+# View post comments
 def comments_view(request, *args, **kwargs):
     # make comment view
     # need to make view comment button on each post page
@@ -938,6 +958,7 @@ def comments_view(request, *args, **kwargs):
     return render(request, "SocialSite/Post/comments.html", context)
 
 
+# Edit post view with form
 def edit_post_view(request, *args, **kwargs):
     user = request.user
     context = {}
