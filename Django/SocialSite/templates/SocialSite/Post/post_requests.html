@@ -31,15 +31,13 @@
         })
     };
     function sharePostRequest(post_id, uiUpdateFunction) {
-        let postId = post_id;
-        let url = "/post/share_post/" + postId.toString();
          payload = {
              "csrfmiddlewaretoken": "{{ csrf_token }}",
              "post_id": post_id,
         }
         $.ajax({
             type: "POST",
-            url: url,
+            url: "{% url 'share-post' %}",
             dataType: "json",
             timeout: 5000,
             data: payload,
@@ -51,9 +49,9 @@
                     alert(data.response);
                 }
             },
-            error: function (data){
-                console.log("Something went wrong: " + data.response);
-            },
+            {#error: function (data){#}
+            {#    console.log("Something went wrong: " + data.response);#}
+            {#,#}
             complete: function (data){
                 uiUpdateFunction();
             }

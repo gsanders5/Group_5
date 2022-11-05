@@ -40,7 +40,7 @@
                                     {% if not obj.friend.id == request.user.id %}
                                         <div class="d-inline-flex align-items-center">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
-                                                 href="" class="text-reset">share</a>
+                                                 href="" onclick=sharePostRequest({{ obj.post.id }})  class="text-reset">share</a>
                                          </span>
                                         </div>
                                     {% endif %}
@@ -76,7 +76,7 @@
                                     {% if not obj.friend.id == request.user.id %}
                                         <div class="d-inline-flex align-items-center">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
-                                                 href="" class="text-reset">share</a>
+                                                 href="" onclick=sharePostRequest({{ obj.post.id }})  class="text-reset">share</a>
                                          </span>
                                         </div>
                                     {% endif %}
@@ -125,7 +125,7 @@
                                     {% if not obj.friend.id == request.user.id %}
                                         <div class="d-inline-flex align-items-center">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
-                                                 href="" class="text-reset">share</a>
+                                                 href="" onclick=sharePostRequest({{ obj.post.id }})  class="text-reset">share</a>
                                          </span>
                                         </div>
                                     {% endif %}
@@ -168,7 +168,7 @@
                                     {% if not obj.friend.id == request.user.id %}
                                         <div class="d-inline-flex align-items-center">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
-                                                 href="" class="text-reset">share</a>
+                                                 href="" onclick=sharePostRequest({{ obj.post.id }})  class="text-reset">share</a>
                                          </span>
                                         </div>
                                     {% endif %}
