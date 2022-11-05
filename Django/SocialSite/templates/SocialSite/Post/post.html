@@ -58,7 +58,7 @@
 
                                         <div class="d-inline-flex align-items-center mb-2">
                                          <span class="material-icons pe-1" id="shareButton"  style="font-size: 18px;"><a
-                                                 href="" class="text-reset">share</a>
+                                                 href="" onclick=sharePostRequest({{post_id }})  class="text-reset">share</a>
                                          </span>
                                         </div>
                                     {% endif %}
@@ -115,7 +115,7 @@
                                     <div class="flex-grow-1"></div>
                                     {% if not is_self == True %}
                                         <div class="d-inline-flex align-items-center mb-2">
-                                         <span class="material-icons pe-1" id="shareButton"  style="font-size: 18px;"><a
+                                         <span class="material-icons pe-1" id="shareButton" onclick=sharePostRequest({{post_id }}) style="font-size: 18px;"><a
                                                  href="" class="text-reset">share</a>
                                          </span>
                                         </div>
@@ -146,7 +146,7 @@
                                         <div class="flex-grow-1"></div>
                                         {% if not is_self == True %}
                                             <div class="d-inline-flex align-items-center mb-2">
-                                         <span class="material-icons pe-1" id="shareButton"  style="font-size: 18px;"><a
+                                         <span class="material-icons pe-1" id="shareButton" onclick=sharePostRequest({{post_id }}) style="font-size: 18px;"><a
                                                  href="" class="text-reset">share</a>
                                          </span>
                                             </div>
@@ -206,7 +206,7 @@
                                                 </div>
                                                 {% if not post.poster.id == request.user.id %}
                                                     <div class="d-inline-flex align-items-center">
-                                         <span class="material-icons pe-1" id="shareButton"  style="font-size: 24px;"><a
+                                         <span class="material-icons pe-1" id="shareButton" onclick=sharePostRequest({{post_id }}) style="font-size: 24px;"><a
                                                  href="" class="text-reset">share</a>
                                          </span>
                                                     </div>
