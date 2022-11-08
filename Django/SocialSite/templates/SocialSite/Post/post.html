@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="flex-grow-1"></div>
                                     <div class="d-inline-flex align-items-center mb-2">
-                                         <span class="material-icons pe-1" id="commentButton"  style="font-size: 18px;"><a
+                                         <span class="material-icons pe-1" id="commentButton"  style="font-size: 24px;"><a
                                                  href="{% url 'comment-post' post_id=post_id %}" class="text-reset">chat_bubble</a>
                                          </span>
                                     </div>
@@ -63,7 +63,6 @@
                                         </div>
                                     {% endif %}
                                 </div>
-                                {#                                comments go here#}
                                 {% if text_content %}
 
                                     <div class="flex-row">
@@ -85,23 +84,23 @@
                                         {% endif %}
                                     {% endfor %}
                                     <div class="flex-row">
-                                    <div class="card-text">
-                                        <a class="text-reset" href="{% url 'comments-post' post_id=post_id %}">
-                                            <p>View all comments</p>
-                                        </a>
-                                        </p>
-                                    </div>
+                                        <div class="card-text">
+                                            <a class="text-reset" href="{% url 'comments-post' post_id=post_id %}">
+                                                <p>View all comments</p>
+                                            </a>
+                                        </div>
                                     </div>
                                 {% endif %}
                             {% endif %}
                             {% if not post_has_image and not is_shared %}
-                                <div class="flex-row mb-3">
-                                    <p class="overflow-auto card-text">
-                                        <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">{{ username }}</a></strong>: {{text_content}}
-                                    </p>
+                                <div class="row g-0 align-items-center mb-3">
+                                    <div class="col-md-12">
+                                        <div class="card-text">
+                                            {{ text_content }}
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="fs-6 fw-light flex-row align-items-center d-flex">
-
                                     <div class="d-inline-flex align-items-center mb-2">
                                         {% if has_liked %}
                                             <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{post_id }})  style="font-size: 24px;"><a
@@ -114,6 +113,11 @@
                                         {% endif %}
                                     </div>
                                     <div class="flex-grow-1"></div>
+                                    <div class="d-inline-flex align-items-center mb-2">
+                                         <span class="material-icons pe-1" id="commentButton"  style="font-size: 24px;"><a
+                                                 href="{% url 'comment-post' post_id=post_id %}" class="text-reset">chat_bubble</a>
+                                         </span>
+                                    </div>
                                     {% if not is_self == True %}
                                         <div class="d-inline-flex align-items-center mb-2">
                                          <span class="material-icons pe-1" id="shareButton" onclick=sharePostRequest({{post_id }}) style="font-size: 18px;"><a
@@ -122,6 +126,7 @@
                                         </div>
                                     {% endif %}
                                 </div>
+
                             {% endif %}
                             {% if is_shared %}
                                 {% if shared_post.is_image %}
@@ -132,29 +137,35 @@
                                             </div>
                                         </a>
                                     </div>
+
+
+                                    </div>
                                     <div class="fs-6 fw-light flex-row align-items-center d-flex">
-                                        <div class="d-inline-flex align-items-center mb-2">
                                             {% if has_liked %}
                                                 <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{post_id }})  style="font-size: 24px;"><a
                                                         href="#" class="text-decoration-none text-danger">favorite</a></span>
                                                 <div>Likes: {{ num_of_likes }}</div>
                                             {% else %}
-                                                 <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{post_id }})  style="font-size: 24px;"><a
-                                                                href="#" class="text-reset">favorite</a></span>
-                                                        <div>Likes: {{ num_of_likes }}</div>
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{post_id }})  style="font-size: 24px;"><a
+                                                        href="#" class="text-reset">favorite</a></span>
+                                                <div>Likes: {{ num_of_likes }}</div>
                                             {% endif %}
-                                        </div>
-                                        <div class="flex-grow-1"></div>
-                                        {% if not is_self == True %}
-                                            <div class="d-inline-flex align-items-center mb-2">
+                                            <div class="flex-grow-1"></div>
+                                            <div class="d-inline-flex align-items-center">
+                                         <span class="material-icons pe-1" id="commentButton"  style="font-size: 24px;"><a
+                                                 href="{% url 'comment-post' post_id=post_id %}" class="text-reset">chat_bubble</a>
+                                         </span>
+                                            </div>
+                                            {% if not is_self == True %}
+                                                <div class="d-inline-flex align-items-center">
                                          <span class="material-icons pe-1" id="shareButton" onclick=sharePostRequest({{post_id }}) style="font-size: 18px;"><a
                                                  href="" class="text-reset">share</a>
                                          </span>
-                                            </div>
-                                        {% endif %}
+                                                </div>
+                                            {% endif %}
                                     </div>
-                                    {% if text_content %}
 
+                                    {% if text_content %}
                                         <div class="flex-row">
                                             <p class="overflow-auto card-text">
                                                 <strong><a class="text-reset" href="{% url 'view' user_id=account_id %}">{{ username }}</a></strong>: {{text_content}}
@@ -178,64 +189,65 @@
                                                 <a class="text-reset" href="{% url 'comments-post' post_id=post_id %}">
                                                     <p>View all comments</p>
                                                 </a>
-                                                </p>
                                             </div>
                                         </div>
                                     {% endif %}
                                 {% else %}
-                                    <div class="card mb-3" style="width: 100%;">
-                                        <a class="text-reset" href="{% url "post" user_id=shared_post.poster.id post_id=shared_post.id %}">
-                                            <div class="row g-0 align-items-center">
-                                                <div class="col-md-12">
-                                                    <div class="card-body">
-                                                        <div class="card-text">
-                                                            {{ shared_post.text_content }}
-                                                        </div>
-                                                    </div>
+                                    <a class="text-reset" href="{% url "post" user_id=shared_post.poster.id post_id=shared_post.id %}">
+                                        <div class="row g-0 align-items-center mb-3">
+                                            <div class="col-md-12">
+                                                <div class="card-text">
+                                                    {{ shared_post.text_content }}
                                                 </div>
                                             </div>
-                                                <div class="d-inline-flex align-items-center me-2">
-                                                    {% if has_liked %}
-                                                        <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{post_id }})  style="font-size: 24px;"><a
-                                                                href="#" class="text-decoration-none text-danger">favorite</a></span>
-                                                        <div>Likes: {{ num_of_likes }}</div>
-                                                    {% else %}
-                                                        <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{post_id }})  style="font-size: 24px;"><a
-                                                                href="#" class="text-reset">favorite</a></span>
-                                                        <div>Likes: {{ num_of_likes }}</div>
-                                                    {% endif %}
+                                        </div>
+                                    </a>
+                                    <div class="flex-row d-flex ">
+                                        <div class="">
+                                            {% if has_liked %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ post_id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-decoration-none text-danger">favorite</a></span>
+                                                <div>Likes: {{ num_of_likes }}</div>
+                                            {% else %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ post_id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-reset">favorite</a></span>
+                                                <div>Likes: {{ num_of_likes }}</div>
+                                            {% endif %}
+                                            {% if not post.poster.id == request.user.id %}
+                                                <div class="flex-grow-1"></div>
+                                                <div class="d-inline-flex align-items-center mb-2">
+                                                    <span class="material-icons pe-1" id="commentButton"  style="font-size: 24px;"><a
+                                                            href="{% url 'comment-post' post_id=post_id %}" class="text-reset">chat_bubble</a>
+                                                    </span>
                                                 </div>
-                                                {% if not post.poster.id == request.user.id %}
-                                                    <div class="d-inline-flex align-items-center">
-                                         <span class="material-icons pe-1" id="shareButton" onclick=sharePostRequest({{post_id }}) style="font-size: 24px;"><a
-                                                 href="" class="text-reset">share</a>
-                                         </span>
-                                                    </div>
-                                                {% endif %}
-                                            </div>
+                                                <span class="material-icons pe-1" id="shareButton" onclick=sharePostRequest({{ post_id }}) style="font-size: 24px;"><a
+                                                        href="" class="text-reset">share</a>
+                                                </span>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 {% endif %}
                             {% endif %}
-                            <div class="d-flex flex-row justify-content-end mt-3">
-                                <div class="fs-6 fw-light text-muted">{{ created_at }}</div>
-                            </div>
-                            </div>
+                        <div class="d-flex flex-row justify-content-end mt-3">
+                            <div class="fs-6 fw-light text-muted">{{ created_at }}</div>
                         </div>
                     </div>
                 </div>
+
+                {% if is_self %}
+                    <div class="d-flex dropdown pt-4 m-auto justify-content-center">
+                        <button class="btn btn-secondary dropdown-toggle" role="button" type="button" id="id_post_toggle" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Post Options
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="id_post_toggle">
+                            <li><a class="dropdown-item" role="menuitem" href="{% url 'delete-post' post_id=post_id %}" >Delete Post</a></li>
+                            <li><a class="dropdown-item" role="menuitem" href="{% url 'edit-post' post_id=post_id %}" >Edit Post</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
             </div>
-            {% if is_self %}
-                <div class="d-flex dropdown pt-4 m-auto justify-content-center">
-                    <button class="btn btn-secondary dropdown-toggle" role="button" type="button" id="id_post_toggle" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Post Options
-                    </button>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="id_post_toggle">
-                        <li><a class="dropdown-item" role="menuitem" href="{% url 'delete-post' post_id=post_id %}" >Delete Post</a></li>
-                        <li><a class="dropdown-item" role="menuitem" href="{% url 'edit-post' post_id=post_id %}" >Edit Post</a></li>
-                    </ul>
-                </div>
-            {% endif %}
         </div>
+    </div>
     </div>
 
 
