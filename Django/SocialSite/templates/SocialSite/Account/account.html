@@ -68,7 +68,7 @@
             <div class="col-8 flex-column">
                 <div class="card">
                     <div class="row g-0 align-items-center">
-                        <div class="col-md-3 p-4 m-0">
+                        <div class="col-md-3 m-0">
                             <img class="d-block border border-dark rounded-circle img-fluid mx-auto profile-image" style="width: 75%;" alt="default image logo" id="id_profile_image" src="{{profile_image}}">
                         </div>
                         <div class="col-md-6">
@@ -170,9 +170,7 @@
                                     <a class="text-reset" href="{% url "post" user_id=id post_id=post.id%}">
                                         <div class="row g-0 align-items-center">
                                             <div class="col-md-3">
-                                                <a href="{% url "post" user_id=id post_id=post.id%}">
                                                     <img class="img-fluid rounded-start" style="width: 100%;" src="{{ post.shared_post.image.url }}" alt="post image">
-                                                </a>
                                             </div>
                                             <div class="col-md-8">
                                                 <div class="card-body">
@@ -192,9 +190,15 @@
                                              </span>
                                         </div>
                                         <div class="d-inline-flex align-items-center me-2">
-                                        <span class="material-icons pe-1" id="likeButton" data-post-id="{{ post.id }}" style="font-size: 24px;"><a
-                                                href="#" onclick=likePostRequest({{ post.id }}) class="text-reset">favorite</a></span>
-                                            <div>Likes: {{ post.num_of_likes }}</div>
+                                            {% if post.has_liked %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-decoration-none text-danger">favorite</a></span>
+                                                <div>Likes: {{ post.num_of_likes }}</div>
+                                            {% else %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-reset">favorite</a></span>
+                                                <div>Likes: {{ post.num_of_likes }}</div>
+                                            {% endif %}
                                         </div>
                                         {% if not is_self == True %}
                                             <div class="d-inline-flex align-items-center">
@@ -208,7 +212,6 @@
                             {% else %}
                                 <div class="card mb-3" style="width: 100%;">
                                     <a class="text-reset" href="{% url "post" user_id=id post_id=post.id%}">
-
                                         <div class="row g-0 align-items-center">
                                             <div class="col-md-12">
                                                 <div class="card-body">
@@ -228,9 +231,15 @@
                                              </span>
                                         </div>
                                         <div class="d-inline-flex align-items-center me-2">
-                                        <span class="material-icons pe-1" id="likeButton" data-post-id="{{ post.id }}"  style="font-size: 24px;"><a
-                                                href="#" onclick=likePostRequest({{ post.id }}) class="text-reset">favorite</a></span>
-                                            <div>Likes: {{  post.num_of_likes }}</div>
+                                            {% if post.has_liked %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-decoration-none text-danger">favorite</a></span>
+                                                <div>Likes: {{ post.num_of_likes }}</div>
+                                            {% else %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-reset">favorite</a></span>
+                                                <div>Likes: {{ post.num_of_likes }}</div>
+                                            {% endif %}
                                         </div>
                                         {% if not is_self == True %}
                                             <div class="d-inline-flex align-items-center">
@@ -246,12 +255,9 @@
                             {% if post.is_image %}
                                 <div class="card mb-3 border-start-0" style="width: 100%;">
                                     <a class="text-reset" href="{% url "post" user_id=id post_id=post.id%}">
-
                                         <div class="row g-0 align-items-center">
                                             <div class="col-md-3">
-                                                <a href="{% url "post" user_id=id post_id=post.id%}">
                                                     <img class="img-fluid rounded-start" style="width: 100%;" src="{{ post.image.url }}" alt="post image">
-                                                </a>
                                             </div>
                                             <div class="col-md-8">
                                                 <div class="card-body">
@@ -273,9 +279,15 @@
                                              </span>
                                         </div>
                                         <div class="d-inline-flex align-items-center me-2">
-                                        <span class="material-icons pe-1" id="likeButton" data-post-id="{{ post.id }}" style="font-size: 24px;"><a
-                                                href="#" onclick=likePostRequest({{ post.id }}) class="text-reset">favorite</a></span>
-                                            <div>Likes: {{ post.num_of_likes }}</div>
+                                            {% if post.has_liked %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-decoration-none text-danger">favorite</a></span>
+                                                <div>Likes: {{ post.num_of_likes }}</div>
+                                            {% else %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-reset">favorite</a></span>
+                                                <div>Likes: {{ post.num_of_likes }}</div>
+                                            {% endif %}
                                         </div>
                                         {% if not is_self == True %}
 
@@ -294,13 +306,11 @@
 
                                         <div class="row g-0 align-items-center">
                                             <div class="col-md-12">
-                                                <a class="text-reset" href="{% url 'post' user_id=id post_id=post.id %}">
                                                     <div class="card-body">
                                                         <div class="card-text">
                                                             {{ post.text_content }}
                                                         </div>
                                                     </div>
-                                                </a>
                                             </div>
                                         </div>
                                     </a>
@@ -313,9 +323,15 @@
                                              </span>
                                         </div>
                                         <div class="d-inline-flex align-items-center me-2">
-                                        <span class="material-icons pe-1" id="likeButton" data-post-id="{{ post_id }}" style="font-size: 24px;"><a
-                                                href="#" onclick=likePostRequest({{ post.id }}) class="text-reset">favorite</a></span>
-                                            <div>Likes: {{ post.num_of_likes }}</div>
+                                            {% if post.has_liked %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-decoration-none text-danger">favorite</a></span>
+                                                <div>Likes: {{ post.num_of_likes }}</div>
+                                            {% else %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-reset">favorite</a></span>
+                                                <div>Likes: {{ post.num_of_likes }}</div>
+                                            {% endif %}
                                         </div>
                                         {% if not is_self == True %}
                                             <div class="d-inline-flex align-items-center">
