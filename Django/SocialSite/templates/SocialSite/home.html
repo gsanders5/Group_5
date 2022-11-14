@@ -32,10 +32,15 @@
                                              </span>
                                     </div>
                                     <div class="d-inline-flex align-items-center me-2">
-                                        <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ obj.post.id }}) style="font-size: 24px;"><a
-                                                href="#" class="text-reset">favorite</a></span>
-                                        <div>Likes: {{ obj.post.num_of_likes }}</div>
-                                        <div class="d-none">{{ obj.post.id }}</div>
+                                        {% if obj.has_liked %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ obj.post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-decoration-none text-danger">favorite</a></span>
+                                                <div>Likes: {{ obj.post.num_of_likes }}</div>
+                                        {% else %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ obj.post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-reset">favorite</a></span>
+                                                <div>Likes: {{ obj.post.num_of_likes }}</div>
+                                        {% endif %}
                                     </div>
                                     {% if not obj.friend.id == request.user.id %}
                                         <div class="d-inline-flex align-items-center">
@@ -68,10 +73,15 @@
                                              </span>
                                     </div>
                                     <div class="d-inline-flex align-items-center me-2">
-                                        <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ obj.post.id }}) style="font-size: 24px;"><a
-                                                href="#" class="text-reset">favorite</a></span>
-                                        <div>Likes: {{  obj.post.num_of_likes }}</div>
-                                        <div class="d-none">{{ obj.post.id }}</div>
+                                        {% if obj.has_liked %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ obj.post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-decoration-none text-danger">favorite</a></span>
+                                                <div>Likes: {{ obj.post.num_of_likes }}</div>
+                                        {% else %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ obj.post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-reset">favorite</a></span>
+                                                <div>Likes: {{ obj.post.num_of_likes }}</div>
+                                        {% endif %}
                                     </div>
                                     {% if not obj.friend.id == request.user.id %}
                                         <div class="d-inline-flex align-items-center">
@@ -117,10 +127,15 @@
                                              </span>
                                     </div>
                                     <div class="d-inline-flex align-items-center me-2">
-                                        <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ obj.post.id }}) style="font-size: 24px;"><a
-                                                href="#" class="text-reset">favorite</a></span>
-                                        <div>Likes: {{ obj.post.num_of_likes }}</div>
-                                        <div class="d-none">{{ obj.post.id }}</div>
+                                        {% if obj.has_liked %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ obj.post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-decoration-none text-danger">favorite</a></span>
+                                                <div>Likes: {{ obj.post.num_of_likes }}</div>
+                                        {% else %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ obj.post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-reset">favorite</a></span>
+                                                <div>Likes: {{ obj.post.num_of_likes }}</div>
+                                        {% endif %}
                                     </div>
                                     {% if not obj.friend.id == request.user.id %}
                                         <div class="d-inline-flex align-items-center">
@@ -160,10 +175,15 @@
                                              </span>
                                     </div>
                                     <div class="d-inline-flex align-items-center me-2">
-                                        <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ obj.post.id }}) style="font-size: 24px;"><a
-                                                href="#" class="text-reset">favorite</a></span>
-                                        <div>Likes: {{ obj.post.num_of_likes }}</div>
-                                        <div class="d-none">{{ obj.post.id }}</div>
+                                        {% if obj.has_liked %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ obj.post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-decoration-none text-danger">favorite</a></span>
+                                                <div>Likes: {{ obj.post.num_of_likes }}</div>
+                                        {% else %}
+                                                <span class="material-icons pe-1" id="likeButton" onclick=likePostRequest({{ obj.post.id }})  style="font-size: 24px;"><a
+                                                        href="" class="text-reset">favorite</a></span>
+                                                <div>Likes: {{ obj.post.num_of_likes }}</div>
+                                        {% endif %}
                                     </div>
                                     {% if not obj.friend.id == request.user.id %}
                                         <div class="d-inline-flex align-items-center">

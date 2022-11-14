@@ -119,6 +119,13 @@ def home_view(request, *args, **kwargs):
                 user_post_object = types.SimpleNamespace()
                 user_post_object.friend = user
                 user_post_object.post = post
+                has_liked = False
+                try:
+                    has_liked = post.usersWhoLiked.get(id=user.id)
+                    if has_liked:
+                        user_post_object.has_liked = True
+                except:
+                    user_post_object.has_liked = False
                 all_posts.append(user_post_object)
         for friend in friends:
             try:
@@ -132,6 +139,13 @@ def home_view(request, *args, **kwargs):
                     friend_post_object = types.SimpleNamespace()
                     friend_post_object.friend = friend
                     friend_post_object.post = post
+                    has_liked = False
+                    try:
+                        has_liked = post.usersWhoLiked.get(id=user.id)
+                        if has_liked:
+                            friend_post_object.has_liked = True
+                    except:
+                        friend_post_object.has_liked = False
                     all_posts.append(friend_post_object)
         all_posts.sort(key=lambda x: x.post.created_at, reverse=True)
         context['posts'] = all_posts
@@ -162,7 +176,7 @@ def account_view(request, *args, **kwargs):
         context['last_name'] = account.last_name
         context['bio'] = account.bio
         context['is_private'] = account.isPrivate
-
+        all_posts = []
         # Get accounts friend list
         # If it doesn't exist, make one
         try:
@@ -225,11 +239,22 @@ def account_view(request, *args, **kwargs):
             except PostList.DoesNotExist:
                 post_list = PostList(user=Account)
                 post_list.save()
-            posts = post_list.posts.all()
-            posts_list = list(posts)
-            posts_list.sort(key=lambda x: x.created_at, reverse=True)
-            num_of_posts = posts.count()
-            context['posts'] = posts_list
+            if post_list:
+                user_posts = post_list.posts.all()
+                for post in user_posts:
+                    user_post_object = types.SimpleNamespace()
+                    user_post_object = post
+                    has_liked = False
+                    try:
+                        has_liked = post.usersWhoLiked.get(id=user.id)
+                        if has_liked:
+                            user_post_object.has_liked = True
+                    except:
+                        user_post_object.has_liked = False
+                    all_posts.append(user_post_object)
+                all_posts.sort(key=lambda x: x.created_at, reverse=True)
+            num_of_posts = len(all_posts)
+            context['posts'] = all_posts
             context['num_of_posts'] = num_of_posts
 
         # Give context necessary variables
