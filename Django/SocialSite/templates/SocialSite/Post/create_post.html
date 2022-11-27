@@ -58,10 +58,13 @@
                                     <input class="d-none" type="file" id="id_post_image" name="post_image" onchange="readURL(this)">
                                 </div>
 
-                                <h6 class="mt-4 field-heading" id="contentTextArea">Content</h6>
                                 <div class="form-floating">
+                                    <h6 class="mt-4 field-heading" id="contentTextArea">Content</h6>
                                     <textarea class="form-control" placeholder="Write your post text here." id="id_input_text_content" style="height: 100px;" name="text_content"></textarea>
-                                    <label for="id_input_text_content">Text</label>
+                                    <h6 class="mt-4 field-heading" id="contentTextArea">Tagged Users</h6>
+                                    <textarea class="form-control" placeholder="Tag another user here." id="id_input_tagged_user" name="tagged_users"></textarea>
+                                    <h6 class="mt-4 field-heading" id="contentTextArea">Tagged Location</h6>
+                                    <textarea class="form-control" placeholder="Write your post text here." id="id_input_tagged_location" name="tagged_location"></textarea>
                                 </div>
 
                                 {% for field in form %}

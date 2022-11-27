@@ -163,6 +163,8 @@ class Post(models.Model):
     shared_post = models.OneToOneField('Post', blank=True, null=True, on_delete=models.CASCADE)
     usersWhoLiked = models.ManyToManyField('Account', blank=True, related_name='users_who_liked')
     usersWhoShared = models.ManyToManyField('Account', blank=True, related_name='users_who_shared')
+    tagged_users = models.CharField(max_length=255, blank=True, null=True)
+    tagged_location = models.CharField(max_length=255, blank=True, null=True)
 
     def like_post(self, account: Account):
         if account not in self.usersWhoLiked.all():
