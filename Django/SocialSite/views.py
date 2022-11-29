@@ -272,14 +272,28 @@ def account_search_view(request, *args, **kwargs):
 
     if request.method == "GET":
         search_query = request.GET.get("q")
+        filter_options = request.GET.get("f")
         if len(search_query) > 0:
+            context['query'] = search_query
             search_results = Account.objects.filter(username__icontains=search_query).distinct()
             user = request.user
             accounts = []
             if user.is_authenticated:
                 auth_user_friend_list = FriendList.objects.get(user=user)
                 for account in search_results:
-                    accounts.append((account, auth_user_friend_list.is_mutual_friend(account)))
+                    if filter_options == "True":
+                        if account == user:
+                            continue
+                        if auth_user_friend_list.is_mutual_friend(account):
+                            accounts.append((account, auth_user_friend_list.is_mutual_friend(account)))
+                    elif filter_options == "False":
+                        if account == user:
+                            continue
+                        if not auth_user_friend_list.is_mutual_friend(account):
+                            accounts.append((account, auth_user_friend_list.is_mutual_friend(account)))
+                    else:
+                        accounts.append((account, auth_user_friend_list.is_mutual_friend(account)))
+
                 context['accounts'] = accounts
             else:
                 for account in search_results:
@@ -287,7 +301,6 @@ def account_search_view(request, *args, **kwargs):
                 context['accounts'] = accounts
 
     return render(request, "SocialSite/Account/search_results.html", context)
-
 
 
 # Edit account page with form
@@ -755,9 +768,11 @@ def post_view(request, *args, **kwargs):
             if post.is_image:
                 context['post_image'] = post.image.url
             context['text_content'] = post.text_content
+            context['tagged_location'] = post.tagged_location
             context['created_at'] = post.created_at.date()
             context['num_of_likes'] = post.num_of_likes
             context['is_shared'] = post.is_shared_post
+
             if post.is_shared_post:
                 context['shared_post'] = post.shared_post
             has_liked = False
@@ -786,6 +801,18 @@ def post_view(request, *args, **kwargs):
             comment_list = list(all_comments)
             comment_list.sort(key=lambda x: x.createdAt, reverse=True)
             context['comments'] = comment_list[0:3]
+
+            if post.tagged_users:
+                tagged_accounts = []
+                tagged_users = post.tagged_users.split(', ')
+
+                for tagged_user in tagged_users:
+                    try:
+                        tagged_account = Account.objects.get(username=tagged_user)
+                        tagged_accounts.append(tagged_account)
+                    except Account.DoesNotExist:
+                        continue
+                context['tagged_users'] = tagged_accounts
 
             # Set initial variables
             is_self = True

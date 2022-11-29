@@ -90,7 +90,7 @@ class PostCreationForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('text_content', 'is_image')
+        fields = ('text_content', 'is_image', 'tagged_users', 'tagged_location')
 
 
 class CommentCreationForm(forms.ModelForm):
