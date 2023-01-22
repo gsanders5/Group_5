@@ -1,12 +1,4 @@
 # Group 5: Intro to SE (Fall 2022)
-
-[![Build Status](https://build.rvnx.org/buildStatus/icon?job=Group_5_Project&subject=Build+Staus%3A)](https://build.rvnx.org/job/Group_5_Project/)
-[![Build Status](https://build.rvnx.org/buildStatus/icon?job=Group_5_Project&subject=Last+Commit+%5B%23Job+Number%5D&status=%24%7BdisplayName%7D)](https://build.rvnx.org/job/Group_5_Project/)
-
-For a live demo of the project: **[click here for the live demo](https://eden.rvnx.org:9192/)**.
-
-This demo is continuously updated and automatically deployed using the last successful build of our repo via Jenkins CI.
-
 ## Project Description:
 Facebook-esque social media platform
 ## Objective:
